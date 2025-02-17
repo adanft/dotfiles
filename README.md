@@ -7,3 +7,4 @@
 - Terminal font should be any Nerd font
 
 ## Preview
+![Preview result](https://github.com/adanft/dotfiles/blob/main/preview.png)
