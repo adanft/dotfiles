@@ -1,0 +1,161 @@
+* {
+  font-family: "SF Pro Display, Symbols Nerd Font";
+  font-size: 16px;
+  font-weight: 600;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  margin: 0;
+}
+
+@import "theme.css";
+
+/* === Main Background === */
+
+window#waybar {
+  background: transparent;
+}
+
+/* === Drop Shadow === */
+
+window#waybar > box {
+  background-color: transparent;
+  margin: 6px 6px 0px 6px;
+}
+
+/* === Tooltip === */
+
+tooltip {
+  background: @base;
+  border: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  border-color: @mauve;
+}
+
+tooltip label {
+  font-size: 14px;
+  color: @text;
+  font-weight: normal;
+  margin: -1.5px 3px;
+}
+
+/* === Workspace Buttons === */
+#workspaces {
+  padding: 0px 8px;
+  background-color: @base;
+}
+
+#workspaces button.empty {
+  color: @surface1;
+}
+
+#workspaces button {
+  color: @overlay1;
+  box-shadow: none;
+  margin: 0px;
+  padding: 0 6px;
+  transition: none;
+}
+#workspaces button:hover {
+  color: @teal;
+  text-shadow: none;
+  box-shadow: none;
+  background: transparent;
+}
+#workspaces button.active {
+  color: @mauve;
+}
+
+#clock,
+#workspaces {
+  border-radius: 999px;
+}
+
+#window {
+  color: @subtext1;
+}
+
+#workspaces {
+  margin-right: 6px
+}
+
+#clock {
+  background-color: @base;
+  color: @subtext1;
+  padding: 0 12px;
+}
+
+#network,
+#bluetooth,
+#wireplumber,
+#battery,
+#backlight,
+#pulseaudio,
+#custom-notification {
+  background-color: @base;
+}
+
+#network.lan {
+  color: @blue;
+  border-radius: 999px 0 0 999px;
+  padding: 0 4px 0 12px;
+}
+
+#custom-notification {
+  margin-right: 6px;
+  color: @yellow;
+  padding: 0 12px 0 8px;
+  border-radius: 0 999px 999px 0;
+}
+
+#network {
+  color: @red;
+  padding: 0 4px;
+}
+
+#bluetooth {
+  color: @pink;
+  padding: 0 8px;
+}
+
+#wireplumber {
+  color: @lavender;
+  padding: 0 4px;
+}
+
+#battery {
+  color: @green;
+  padding: 0 8px;
+}
+
+#backlight {
+  color: @yellow;
+  padding: 0 8px;
+}
+
+#pulseaudio {
+  color: @flamingo;
+  padding: 0 4px;
+}
+
+#tray {
+  margin: 0 8px; 
+}
+
+#power-profiles-daemon {
+  font-size: 28px;
+  margin-left: 6px;
+}
+
+#power-profiles-daemon.performance {
+  color: @red;
+}
+
+#power-profiles-daemon.balanced {
+  color: @blue;
+}
+
+#power-profiles-daemon.power-saver {
+  color: @green;
+}

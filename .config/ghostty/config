@@ -1,0 +1,105 @@
+theme = catppuccin-mocha
+
+font-family = CaskaydiaCove NF
+font-size = 12
+
+background-opacity = 0.95
+
+window-decoration = false 
+window-theme = ghostty
+window-padding-x = 12
+window-padding-y = 12
+confirm-close-surface = false
+
+# Disable adjust selection
+keybind = shift+up=unbind
+keybind = shift+down=unbind
+keybind = shift+right=unbind
+keybind = shift+insert=unbind
+keybind = shift+left=unbind
+
+# Disable scroll move
+keybind = shift+page_up=unbind
+keybind = shift+end=unbind
+keybind = shift+page_down=unbind
+keybind = shift+home=unbind
+
+# Disable default split keys
+keybind = ctrl+shift+o=unbind
+keybind = ctrl+shift+e=unbind
+keybind = super+ctrl+left_bracket=unbind
+keybind = super+ctrl+right_bracket=unbind
+keybind = ctrl+alt+down=unbind
+keybind = ctrl+alt+up=unbind
+
+# Disable default tab keys
+keybind = alt+one=unbind
+keybind = alt+two=unbind
+keybind = alt+three=unbind
+keybind = alt+four=unbind
+keybind = alt+five=unbind
+keybind = alt+six=unbind
+keybind = alt+seven=unbind
+keybind = alt+eight=unbind
+keybind = alt+nine=unbind
+keybind = ctrl+page_down=unbind
+keybind = ctrl+shift+left=unbind
+keybind = ctrl+page_up=unbind
+keybind = ctrl+tab=unbind
+keybind = ctrl+shift+right=unbind
+keybind = ctrl+shift+t=unbind
+keybind = ctrl+shift+tab=unbind
+
+# Disable default font size keys
+# keybind = ctrl+equal=unbind
+
+# Disable close windows keys
+keybind = alt+f4=unbind
+
+# Disable some repeat keys
+keybind = ctrl+comma=unbind
+keybind = ctrl+insert=unbind
+keybind = ctrl+alt+shift+j=unbind
+keybind = ctrl+alt+shift+comma=unbind
+keybind = ctrl+shift+page_up=unbind
+keybind = ctrl+shift+page_down=unbind
+keybind = ctrl+shift+comma=unbind
+keybind = ctrl+shift+q=unbind
+keybind = ctrl+shift+n=unbind
+keybind = ctrl+shift+i=unbind
+keybind = ctrl+shift+a=unbind
+keybind = ctrl+enter=unbind
+
+# Key configurations
+keybind = ctrl+shift+r=reload_config
+keybind = ctrl+shift+l=new_split:right
+keybind = ctrl+shift+j=new_split:down
+keybind = ctrl+shift+k=new_split:up
+keybind = ctrl+shift+h=new_split:left
+keybind = ctrl+shift+w=close_surface
+keybind = ctrl+down=scroll_page_down
+keybind = ctrl+up=scroll_page_up
+
+# Disable existens keys
+keybind = ctrl+shift+l=unbind
+keybind = ctrl+shift+j=unbind
+keybind = ctrl+shift+k=unbind
+keybind = ctrl+shift+h=unbind
+keybind = ctrl+shift+w=unbind
+keybind = ctrl+down=unbind
+keybind = ctrl+up=unbind
+keybind = ctrl+shift+enter=unbind
+keybind = ctrl+alt+right=unbind
+keybind = ctrl+alt+left=unbind
+keybind = super+ctrl+shift+equal=unbind
+keybind = super+ctrl+shift+up=unbind
+keybind = super+ctrl+shift+down=unbind
+keybind = super+ctrl+shift+right=unbind
+keybind = super+ctrl+shift+left=unbind
+keybind = super+ctrl+shift+plus=unbind
+
+# configurations
+split-divider-color=white
+unfocused-split-fill=#1e1e2e
+unfocused-split-opacity=0.5
+

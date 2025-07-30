@@ -1,0 +1,25 @@
+general.import = ["~/.config/alacritty/theme.toml"]
+
+[env]
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+[window]
+padding = { x = 4, y = 2 }
+dynamic_padding = true 
+opacity = 0.95
+
+[font]
+normal = { family = "CaskaydiaCove NF", style = "Regular" }
+bold = { family = "CaskaydiaCove NF", style = "Bold" }
+italic = { family = "CaskaydiaCove NF", style = "Italic" }
+bold_italic = { family = "CaskaydiaCove NF", style = "Bold Italic" }
+
+size = 12
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+style = { shape = "Beam", blinking = "On" }
+
