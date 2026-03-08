@@ -14,7 +14,7 @@ yes=''
 no=''
 
 # Current Session Type
-xdg="$DESKTOP_SESSION"
+xdg="hyprland"
 
 # Rofi CMD
 rofi_cmd() {

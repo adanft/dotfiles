@@ -1,9 +1,9 @@
 add_newline = false
 
 [character]
-error_symbol = "[➜](bold red)"
-success_symbol = "[➜](bold green)"
-vicmd_symbol = "[➜](bold yellow)"
+error_symbol = "[](bold red)"
+success_symbol = "[](bold green)"
+vicmd_symbol = "[](bold yellow)"
 
 [directory]
 style = "bold blue"
@@ -17,4 +17,13 @@ symbol = "󰌠 "
 
 [lua]
 symbol = " "
+
+[golang]
+symbol = " "
+
+[rust]
+symbol = "󱘗 "
+
+[package]
+symbol = " "
 

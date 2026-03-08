@@ -1,7 +1,7 @@
 * {
   all: unset;
-  font-size: 14px;
-  font-family: "Ubuntu Nerd Font";
+  font-size: 16px;
+  font-family: "SF Pro Display", "Symbols Nerd Font";
   transition: 200ms;
 }
 
@@ -22,16 +22,17 @@ slider {
 
 .floating-notifications.background .notification-row .notification-background {
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px #313244;
-  border-radius: 12.6px;
-  margin: 18px;
+  border-radius: 12px;
+  margin: 6px;
   background-color: #1e1e2e;
   color: #cdd6f4;
   padding: 0;
+  border: 2px solid skyblue;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification {
   padding: 7px;
-  border-radius: 12.6px;
+  border-radius: 12px;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification.critical {

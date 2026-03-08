@@ -94,7 +94,7 @@ tooltip label {
 #wireplumber,
 #battery,
 #backlight,
-#pulseaudio,
+#wireplumber.source,
 #custom-notification {
   background-color: @base;
 }
@@ -137,7 +137,7 @@ tooltip label {
   padding: 0 8px;
 }
 
-#pulseaudio {
+#wireplumber.source {
   color: @flamingo;
   padding: 0 4px;
 }
