@@ -1,9 +1,10 @@
 # Set Unicode format, but is not necessary
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export PATH="$PATH:$HOME/.dotnet/tools"
 
 # Disable vi mode [-e], to enable [-v], default always works Emacs mode
-bindkey -e
+bindkey -v
 
 source $HOME/.colors.sh
 
@@ -74,6 +75,15 @@ alias la="ls -a"
 alias lla="ls -la"
 alias lt="ls --tree"
 alias grep="grep --color=auto"
+alias ff="fastfetch"
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+source /usr/share/nvm/init-nvm.sh
+
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="$HOME/flutter/bin:$PATH"
+
+eval "$(zoxide init zsh)"
