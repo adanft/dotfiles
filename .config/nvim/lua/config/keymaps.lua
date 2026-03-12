@@ -25,3 +25,6 @@ map("n", "<leader>nt", function() require("noice").cmd("pick") end, { desc = "No
 -- Comments
 map("n", "<C-/>", "gcc", { desc = "Toggle Comment", remap = true })
 map("v", "<C-/>", "gc",  { desc = "Toggle Comment", remap = true })
+
+-- Select all
+map('n', '<C-a>', 'ggVG', { desc = 'Select all' })

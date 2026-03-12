@@ -6,6 +6,7 @@ return {
       bash = { "shfmt" },
       zsh = { "shfmt" },
       sh = { "shfmt" },
+      json = { "biome" },
     },
   },
 }

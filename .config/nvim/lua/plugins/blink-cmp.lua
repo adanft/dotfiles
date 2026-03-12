@@ -25,14 +25,6 @@ return {
     sources = {
       default = { "lsp", "path", "snippets", "buffer" },
     },
-    signature = {
-      enabled = true,
-      window = {
-        border = "rounded",
-        scrollbar = false,
-        show_documentation = true, -- solo muestra la firma, no la documentación
-      },
-    },
     fuzzy = { implementation = "prefer_rust_with_warning" },
   },
   opts_extend = { "sources.default" },

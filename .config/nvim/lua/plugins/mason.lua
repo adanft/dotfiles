@@ -5,6 +5,7 @@ return {
     tools = {
       "stylua",
       "shfmt",
+      "biome",
     },
     ui = {
       icons = {
