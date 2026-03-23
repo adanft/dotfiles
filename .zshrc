@@ -84,6 +84,5 @@ source /usr/share/nvm/init-nvm.sh
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
-export PATH="$HOME/flutter/bin:$PATH"
 
 eval "$(zoxide init zsh)"
