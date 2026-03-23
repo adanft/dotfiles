@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tuigreet --user-menu --asterisks --time --theme 'border=blue;text=white;prompt=red;time=blue;action=green;button=blue;container=black;input=white'
