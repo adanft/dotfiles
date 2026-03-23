@@ -7,6 +7,10 @@ return {
       zsh = { "shfmt" },
       sh = { "shfmt" },
       json = { "biome" },
+      javascript = { "biome" },
+      javascriptreact = { "biome" },
+      typescript = { "biome" },
+      typescriptreact = { "biome" },
     },
   },
 }

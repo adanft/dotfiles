@@ -9,7 +9,7 @@ opt.relativenumber = true
 opt.laststatus = 3
 opt.undofile = true
 opt.showmode = false
-opt.cmdheight = 0
+opt.cmdheight = 1
 opt.updatetime = 250
 
 opt.tabstop = 2

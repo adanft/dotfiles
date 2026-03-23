@@ -3,7 +3,7 @@ local mocha = require("themes.mocha").theme
 return {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { "nvim-mini/mini.icons" },
   opts = {
     options = {
       theme = mocha,
@@ -39,11 +39,11 @@ return {
           "lsp_status",
           icon = { " " },
           color = { fg = "#89b4fa" },
-          ignore_lsp = { "stylua" },
+          ignore_lsp = { "" },
           separator = "",
           symbols = {
-            spinner = { "󱦟 ", "󰞌 " },
-            done = " ",
+            spinner = { "󱦟", "󰞌" },
+            done = "",
             separator = " ",
           },
         },

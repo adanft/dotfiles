@@ -27,6 +27,10 @@ return {
         FlashCurrent = { bg = "#ff007c", fg = "#c8d3f5", bold = true },
         FlashLabel = { bg = "#14dba6", fg = "#1e1e2e", bold = true },
         FlashBackdrop = { fg = "#45475a" },
+        ["@tag"] = { fg = "#f9e2af" },
+        ["@tag.builtin"] = { fg = "#83d4e2" },
+        ["@tag.delimiter"] = { fg = "#f38ba8" },
+        ["@tag.attribute"] = { fg = "#f38ba8" },
       }
     end,
   },
