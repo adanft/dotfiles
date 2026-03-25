@@ -1,8 +1,8 @@
 #!/bin/bash
 
-current=$(hyprctl getoption general:layout)
+current=$(hyprctl -j getoption general:layout | jq -r '.str')
 
-if echo "$current" | grep -q 'dwindle'; then
+if [[ "$current" == *"dwindle"* ]]; then
   hyprctl keyword general:layout master
 else
   hyprctl keyword general:layout dwindle

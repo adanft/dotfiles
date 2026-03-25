@@ -1,23 +1,19 @@
 #!/bin/bash
 
-current_workspace=$(hyprctl activeworkspace | grep 'workspace ID' | awk '{print $3}')
-
+current=$(hyprctl -j activeworkspace | jq -r '.id')
 workspaces=8
-
 dir=$1
 
 if [[ "$dir" == "next" ]]; then
-  move_workspace=$((current_workspace + 1))
-  if [[ $move_workspace -gt $workspaces ]]; then
-    move_workspace=1
+  move=$((current + 1))
+  if (( move > workspaces )); then
+    move=1
   fi
 elif [[ "$dir" == "prev" ]]; then
-  move_workspace=$((current_workspace - 1))
-  if [[ $move_workspace -lt 1 ]]; then
-    move_workspace=$workspaces
+  move=$((current - 1))
+  if (( move < 1 )); then
+    move=$workspaces
   fi
-else
-  echo "Missing parameter: $0 [next|prev]"
 fi
 
-hyprctl dispatch workspace $move_workspace
+hyprctl dispatch workspace $move
