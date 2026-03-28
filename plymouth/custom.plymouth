@@ -4,5 +4,5 @@ Description=A sweet plymouth theme.
 ModuleName=script
 
 [script]
-ImageDir=/usr/share/plymouth/themes//custom
-ScriptFile=/usr/share/plymouth/themes//custom/custom.script
+ImageDir=/usr/share/plymouth/themes/custom
+ScriptFile=/usr/share/plymouth/themes/custom/custom.script

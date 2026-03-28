@@ -1,4 +1,15 @@
 # Plymouth Custom Theme Script
+# Palette: Catppuccin Mocha
+
+# --- Background (Catppuccin Mocha Base #1E1E2E) ---
+bg_r = 0.118;
+bg_g = 0.118;
+bg_b = 0.180;
+
+Window.SetBackgroundTopColor(bg_r, bg_g, bg_b);
+Window.SetBackgroundBottomColor(bg_r, bg_g, bg_b);
+
+# --- Utility functions ---
 
 fun set_scaled_sprite(sprite, image, zoom) {
     sprite.SetImage(image.Scale(image.GetWidth() * zoom, image.GetHeight() * zoom));
@@ -19,74 +30,85 @@ fun ease_value(min, max, percent) {
     return min + ease_coefficient(percent) * (max - min);
 }
 
-fun animate_in_zoom(sprite, image, min, max, percent, x, y) {
-    set_scaled_sprite(sprite, image, ease_value(min, max, percent));
-    position_sprite(sprite, x, y);
-}
-
-fun animate_in_opacity(sprite, min, max, percent) {
-    sprite.SetOpacity(ease_value(min, max, percent));
-}
-
-Window.SetBackgroundTopColor(0.118, 0.118, 0.180);
-Window.SetBackgroundBottomColor(0.118, 0.118, 0.180);
+# --- Logo ---
 
 logo_image = Image("logo.png");
 logo_sprite = Sprite();
-logo_sprite.SetOpacity(1);
+
+if (logo_image) {
+    set_scaled_sprite(logo_sprite, logo_image, 1);
+    position_sprite(logo_sprite, 0.5, 0.45);
+}
+
+# --- Spinner ---
+
+SPINNER_STEPS = 100;
+SPINNER_RADIANS_PER_STEP = 6.2831 / SPINNER_STEPS;
 
 spinner_image = Image("spinner.png");
 spinner_sprite = Sprite();
-spinner_sprite.SetOpacity(1);
-counter = 0;
 
-MIN_ITERATIONS = 10;
-MAX_ITERATIONS = 60;
-animation_started = 0;
+counter = 0;
 
 fun animate() {
     counter++;
-    
+
+    if (counter >= SPINNER_STEPS)
+        counter = 0;
+
     if (spinner_image) {
-        rotation_angle = (counter % 100) * 0.06283;
-        rotated_spinner = spinner_image.Rotate(rotation_angle);
-        spinner_sprite.SetImage(rotated_spinner);
-        
-        if (spinner_sprite.GetImage()) {
+        rotation_angle = counter * SPINNER_RADIANS_PER_STEP;
+        spinner_sprite.SetImage(spinner_image.Rotate(rotation_angle));
+
+        if (spinner_sprite.GetImage())
             position_sprite(spinner_sprite, 0.5, 0.8);
-        }
-    }
-    
-    if (logo_image && counter == 1) {
-        set_scaled_sprite(logo_sprite, logo_image, 1);
-        position_sprite(logo_sprite, 0.5, 0.45);
     }
 }
+
+# --- Password prompt (reuse sprites to avoid leaks) ---
+
+prompt_sprite = Sprite();
+MAX_BULLETS = 32;
+bullet_sprites = [];
+
+for (i = 0; i < MAX_BULLETS; i++) {
+    bullet_sprites[i] = Sprite();
+}
+
+fun display_password_callback(prompt, bullets) {
+    prompt_sprite.SetImage(Image.Text(prompt, 1, 1, 1));
+    prompt_sprite.SetPosition(10, Window.GetHeight() - 100, 1);
+
+    bullet_image = Image.Text("•", 1, 1, 1);
+
+    for (i = 0; i < MAX_BULLETS; i++) {
+        if (i < bullets) {
+            bullet_sprites[i].SetImage(bullet_image);
+            bullet_sprites[i].SetPosition(10 + i * 20, Window.GetHeight() - 50, 1);
+            bullet_sprites[i].SetOpacity(1);
+        } else {
+            bullet_sprites[i].SetOpacity(0);
+        }
+    }
+}
+
+# --- Messages ---
 
 message_sprite = Sprite();
 message_sprite.SetPosition(10, 10, 1);
 
-fun display_normal_callback() {
-}
-
-fun display_password_callback(prompt, bullets) {
-    question_sprite = Sprite();
-    question_sprite.SetImage(Image.Text(prompt, 1, 1, 1));
-    question_sprite.SetPosition(10, Window.GetHeight() - 100, 1);
-    
-    bullet_image = Image.Text("•", 1, 1, 1);
-    for (i = 0; i < bullets; i++) {
-        bullet_sprite = Sprite();
-        bullet_sprite.SetImage(bullet_image);
-        bullet_sprite.SetPosition(10 + i * 20, Window.GetHeight() - 50, 1);
-    }
-}
-
 fun display_message_callback(message) {
-    message_image = Image.Text(message, 1, 1, 1);
-    message_sprite.SetImage(message_image);
+    message_sprite.SetImage(Image.Text(message, 1, 1, 1));
     message_sprite.SetPosition(10, Window.GetHeight() - 30, 1);
 }
+
+fun display_normal_callback() {
+    prompt_sprite.SetOpacity(0);
+    for (i = 0; i < MAX_BULLETS; i++)
+        bullet_sprites[i].SetOpacity(0);
+}
+
+# --- Register callbacks ---
 
 Plymouth.SetRefreshFunction(animate);
 Plymouth.SetDisplayNormalFunction(display_normal_callback);
