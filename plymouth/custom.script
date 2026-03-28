@@ -1,0 +1,94 @@
+# Plymouth Custom Theme Script
+
+fun set_scaled_sprite(sprite, image, zoom) {
+    sprite.SetImage(image.Scale(image.GetWidth() * zoom, image.GetHeight() * zoom));
+}
+
+fun position_sprite(sprite, x, y) {
+    sprite.SetX(Window.GetWidth() * x - sprite.GetImage().GetWidth() / 2);
+    sprite.SetY(Window.GetHeight() * y - sprite.GetImage().GetHeight() / 2);
+}
+
+fun ease_coefficient(percent) {
+    if (percent < 0) percent = 0;
+    if (percent > 1) percent = 1;
+    return (percent * percent) / (percent * percent + (1 - percent) * (1 - percent));
+}
+
+fun ease_value(min, max, percent) {
+    return min + ease_coefficient(percent) * (max - min);
+}
+
+fun animate_in_zoom(sprite, image, min, max, percent, x, y) {
+    set_scaled_sprite(sprite, image, ease_value(min, max, percent));
+    position_sprite(sprite, x, y);
+}
+
+fun animate_in_opacity(sprite, min, max, percent) {
+    sprite.SetOpacity(ease_value(min, max, percent));
+}
+
+Window.SetBackgroundTopColor(0.118, 0.118, 0.180);
+Window.SetBackgroundBottomColor(0.118, 0.118, 0.180);
+
+logo_image = Image("logo.png");
+logo_sprite = Sprite();
+logo_sprite.SetOpacity(1);
+
+spinner_image = Image("spinner.png");
+spinner_sprite = Sprite();
+spinner_sprite.SetOpacity(1);
+counter = 0;
+
+MIN_ITERATIONS = 10;
+MAX_ITERATIONS = 60;
+animation_started = 0;
+
+fun animate() {
+    counter++;
+    
+    if (spinner_image) {
+        rotation_angle = (counter % 100) * 0.06283;
+        rotated_spinner = spinner_image.Rotate(rotation_angle);
+        spinner_sprite.SetImage(rotated_spinner);
+        
+        if (spinner_sprite.GetImage()) {
+            position_sprite(spinner_sprite, 0.5, 0.8);
+        }
+    }
+    
+    if (logo_image && counter == 1) {
+        set_scaled_sprite(logo_sprite, logo_image, 1);
+        position_sprite(logo_sprite, 0.5, 0.45);
+    }
+}
+
+message_sprite = Sprite();
+message_sprite.SetPosition(10, 10, 1);
+
+fun display_normal_callback() {
+}
+
+fun display_password_callback(prompt, bullets) {
+    question_sprite = Sprite();
+    question_sprite.SetImage(Image.Text(prompt, 1, 1, 1));
+    question_sprite.SetPosition(10, Window.GetHeight() - 100, 1);
+    
+    bullet_image = Image.Text("•", 1, 1, 1);
+    for (i = 0; i < bullets; i++) {
+        bullet_sprite = Sprite();
+        bullet_sprite.SetImage(bullet_image);
+        bullet_sprite.SetPosition(10 + i * 20, Window.GetHeight() - 50, 1);
+    }
+}
+
+fun display_message_callback(message) {
+    message_image = Image.Text(message, 1, 1, 1);
+    message_sprite.SetImage(message_image);
+    message_sprite.SetPosition(10, Window.GetHeight() - 30, 1);
+}
+
+Plymouth.SetRefreshFunction(animate);
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+Plymouth.SetMessageFunction(display_message_callback);
