@@ -27,3 +27,7 @@ symbol = "󱘗 "
 [package]
 symbol = " "
 
+[bun]
+symbol = " "
+style = "bold yellow"
+

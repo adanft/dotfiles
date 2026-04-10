@@ -21,7 +21,7 @@ map("n", "<C-/>", "gcc", { desc = "Toggle Comment", remap = true })
 map("v", "<C-/>", "gc",  { desc = "Toggle Comment", remap = true })
 
 -- Select all
-map('n', '<C-a>', 'ggVG', { desc = 'Select all' })
+map('n', '<C-e>', 'ggVG', { desc = 'Select all' })
 
 -- Esc
 map("n", "<Esc>", "<cmd>nohlsearch<CR>")
