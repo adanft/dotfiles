@@ -10,10 +10,10 @@ dynamic_padding = true
 opacity = 0.95
 
 [font]
-normal = { family = "ZedMono NF", style = "Regular" }
-bold = { family = "ZedMono NF", style = "Bold" }
-italic = { family = "ZedMono NF", style = "Italic" }
-bold_italic = { family = "ZedMono NF", style = "Bold Italic" }
+normal = { family = "IosevkaTerm Nerd Font", style = "Regular" }
+bold = { family = "IosevkaTerm Nerd Font", style = "Bold" }
+italic = { family = "IosevkaTerm Nerd Font", style = "Italic" }
+bold_italic = { family = "IosevkaTerm Nerd Font", style = "Bold Italic" }
 
 size = 12
 
@@ -22,4 +22,3 @@ save_to_clipboard = true
 
 [cursor]
 style = { shape = "Beam", blinking = "On" }
-

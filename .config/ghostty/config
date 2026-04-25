@@ -21,7 +21,7 @@ cursor-text = #1e1e2e
 selection-background = #353749
 selection-foreground = #cdd6f4
 
-font-family = Iosevka Nerd Font Propo
+font-family = IosevkaTerm Nerd Font
 font-size = 12
 
 background-opacity = 1
@@ -49,10 +49,9 @@ keybind = shift+page_down=unbind
 keybind = shift+home=unbind
 
 # Disable default split keys
-keybind = ctrl+shift+o=open_config
 keybind = ctrl+shift+e=unbind
-keybind = super+ctrl+left_bracket=unbind
-keybind = super+ctrl+right_bracket=unbind
+keybind = super+ctrl+[=unbind
+keybind = super+ctrl+]=unbind
 keybind = ctrl+alt+down=unbind
 keybind = ctrl+alt+up=unbind
 
@@ -101,12 +100,14 @@ keybind = ctrl+,=unbind
 
 # Key configurations
 keybind = ctrl+shift+r=reload_config
-keybind = ctrl+shift+n=new_tab
-keybind = ctrl+shift+l=new_split:right
-keybind = ctrl+shift+j=new_split:down
-keybind = ctrl+shift+k=new_split:up
-keybind = ctrl+shift+h=new_split:left
-keybind = ctrl+shift+w=close_tab
+keybind = ctrl+shift+n=unbind
+keybind = ctrl+shift+l=unbind
+keybind = ctrl+shift+j=unbind
+keybind = ctrl+shift+k=unbind
+keybind = ctrl+shift+f=unbind
+keybind = ctrl+shift+h=unbind
+keybind = ctrl+shift+o=unbind
+keybind = ctrl+shift+w=unbind
 keybind = ctrl+down=scroll_page_down
 keybind = ctrl+up=scroll_page_up
 
@@ -115,7 +116,7 @@ keybind = ctrl+shift+l=unbind
 keybind = ctrl+shift+j=unbind
 keybind = ctrl+shift+k=unbind
 keybind = ctrl+shift+h=unbind
-keybind = ctrl+shift+w=close_tab
+keybind = ctrl+shift+w=unbind
 keybind = ctrl+down=unbind
 keybind = ctrl+up=unbind
 keybind = ctrl+shift+enter=unbind
@@ -128,12 +129,15 @@ keybind = super+ctrl+shift+right=unbind
 keybind = super+ctrl+shift+left=unbind
 keybind = super+ctrl+shift+plus=unbind
 keybind = super+ctrl+shift+j=unbind
+keybind = escape=unbind
+keybind = copy=unbind
+keybind = paste=unbind
 
 # Tab navigation (only 1-4)
-keybind = alt+digit_1=goto_tab:1
-keybind = alt+digit_2=goto_tab:2
-keybind = alt+digit_3=goto_tab:3
-keybind = alt+digit_4=goto_tab:4
+keybind = alt+digit_1=unbind
+keybind = alt+digit_2=unbind
+keybind = alt+digit_3=unbind
+keybind = alt+digit_4=unbind
 keybind = alt+digit_5=unbind
 keybind = alt+digit_6=unbind
 keybind = alt+digit_7=unbind

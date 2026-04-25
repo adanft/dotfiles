@@ -17,14 +17,23 @@
     "battery",
     "wireplumber#source",
     "custom/notification",
-    "clock#date",
+    "clock#date"
   ],
   "hyprland/workspaces": {
     "format": "{icon}",
     "format-icons": {
+      "1": "󰲠",
+      "2": "󰲠",
+      "3": "󰲠",
+      "4": "󰲢",
+      "5": "󰲢",
+      "6": "󰲢",
+      "7": "󰲤",
+      "8": "󰲤",
+      "9": "󰲤",
       "urgent": "",
       "active": "",
-      "default": "",
+      "default": ""
     },
     "persistent-workspaces": {
       "1": [],
@@ -35,22 +44,24 @@
       "6": [],
       "7": [],
       "8": [],
+      "9": []
     },
     "sort-by-number": true,
-    "all-outputs": false,
+    "all-outputs": false
   },
   "hyprland/window": {
     "format": "{}",
     "swap-icon-label": true,
     "min-length": 5,
+    "tooltip": false,
     "rewrite": {
-      "^(.*)$": "<span foreground='#89b4fa' size='large'>󰰤 </span> $1",
-    },
+      "^(.*)$": "<span foreground='#89b4fa' size='large'>󰰤 </span> $1"
+    }
   },
   "clock#time": {
     "format": "󱑂  {:%H:%M}",
     "tooltip": false,
-    "tooltip-format": "Standard Time: {:%I:%M %p}",
+    "tooltip-format": "Standard Time: {:%I:%M %p}"
   },
   "clock#date": {
     "format": "󰨳  {:%m-%d}",
@@ -62,23 +73,23 @@
       "format": {
         "months": "<span color='#b4befe'><b>{}</b></span>",
         "weekdays": "<span color='#a6adc8' font='7'>{}</span>",
-        "today": "<span color='#f38ba8'><b>{}</b></span>",
-      },
+        "today": "<span color='#f38ba8'><b>{}</b></span>"
+      }
     },
     "actions": {
       "on-click": "mode",
-      "on-click-right": "mode",
-    },
+      "on-click-right": "mode"
+    }
   },
   "network#lan": {
-    "interface": "enp7s0",
+    "interface": "enp6s0",
     "tooltip-format-disconnected": "󰌙  {ifname}",
     "format": "󰌗 ",
     "format-ethernet": "󰌗 {bandwidthUpBytes}  {bandwidthDownBytes} ",
     "format-disconnected": "󰌙 0 0",
     "on-click": "alacritty --class floating -e nmtui",
     "tooltip-format": "{ifname}  {ipaddr}",
-    "tooltip": true,
+    "tooltip": true
   },
   "network#wifi": {
     "interface": "wlan0",
@@ -90,7 +101,7 @@
     "on-click": "alacritty --class floating -e nmtui",
     "tooltip": true,
     "interval": 5,
-    "tooltip-format-connected": "{essid} 󰤨  {signalStrength}%  {frequency}",
+    "tooltip-format-connected": "{essid} 󰤨  {signalStrength}%  {frequency}"
   },
   "bluetooth": {
     "format": "󰂯",
@@ -99,14 +110,14 @@
     "tooltip-format": "{controller_alias}  󰂲",
     "tooltip-format-connected": "{controller_alias}  {device_alias}",
     "on-click": "hyprctl dispatch exec '[float] blueman-manager'",
-    "interval": 1,
+    "interval": 1
   },
   "wireplumber": {
     "format": "{icon}  {volume}%",
     "format-muted": "",
     "format-icons": ["", "", ""],
     "tooltip": false,
-    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   },
   "wireplumber#source": {
     "format": "{icon}  {volume}%",
@@ -116,11 +127,11 @@
     },
     "node-type": "Audio/Source",
     "tooltip": false,
-    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
   },
   "tray": {
     "icon-size": 24,
-    "spacing": 10,
+    "spacing": 10
   },
   "custom/notification": {
     "tooltip": false,
@@ -133,20 +144,20 @@
       "inhibited-notification": "<span foreground='#f38ba8'><sup></sup></span>",
       "inhibited-none": "",
       "dnd-inhibited-notification": "<span foreground='#f38ba8'><sup></sup></span>",
-      "dnd-inhibited-none": "",
+      "dnd-inhibited-none": ""
     },
     "return-type": "json",
     "exec-if": "which swaync-client",
     "exec": "swaync-client -swb",
     "on-click": "swaync-client -t -sw",
     "on-click-right": "swaync-client -d -sw",
-    "escape": true,
+    "escape": true
   },
   "backlight": {
     "device": "intel_backlight",
     "format": "{icon} {percent}%",
     "format-icons": ["", "", "", "", "", "", "", "", ""],
-    "tooltip": false,
+    "tooltip": false
   },
   "battery": {
     "interval": 60,
@@ -154,7 +165,7 @@
       "full": 100,
       "good": 99,
       "warning": 30,
-      "critical": 15,
+      "critical": 15
     },
     "format": "{icon} {capacity}%",
     "format-icons": ["󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂"],
@@ -162,7 +173,7 @@
     "format-warning": "󰁻 {capacity}%",
     "format-critical": "󱃍 {capacity}%",
     "format-charging": "󱘖 {capacity}%",
-    "tooltip": false,
+    "tooltip": false
   },
   "power-profiles-daemon": {
     "format": "{icon}",
@@ -172,7 +183,7 @@
       "default": "",
       "performance": "󰠠",
       "balanced": "󰚀",
-      "power-saver": "󱤆",
-    },
-  },
+      "power-saver": "󱤆"
+    }
+  }
 }

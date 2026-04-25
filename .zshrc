@@ -3,6 +3,18 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export PATH="$PATH:$HOME/.dotnet/tools"
 
+# Auto-start tmux for interactive terminal shells.
+WM_VAR="/$TMUX"
+WM_CMD="tmux"
+
+function start_if_needed() {
+    if [[ $- == *i* ]] && [[ -z "${WM_VAR#/}" ]] && [[ -t 1 ]]; then
+        exec $WM_CMD
+    fi
+}
+
+start_if_needed
+
 # Disable vi mode [-e], to enable [-v], default always works Emacs mode
 bindkey -v
 
@@ -67,9 +79,9 @@ export SUDO_PROMPT="passwd: "
 
 # Aliases
 alias ls='lsd --group-dirs=first'
-alias cat='bat --theme=OneHalfDark -P -p'
-alias catp='bat --theme=OneHalfDark -p'
-alias catn='bat --theme=OneHalfDark --style=numbers'
+alias cat='bat --theme="Catppuccin Mocha" -P -p'
+alias catp='bat --theme="Catppuccin Mocha" -p'
+alias catn='bat --theme="Catppuccin Mocha" --style=numbers'
 alias ll="ls -l"
 alias la="ls -a"
 alias lla="ls -la"
@@ -86,3 +98,21 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 
 eval "$(zoxide init zsh)"
+
+# opencode
+export PATH="$HOME/.opencode/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

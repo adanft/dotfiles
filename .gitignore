@@ -1,1 +1,9 @@
 lazy-lock.json
+
+# OpenCode local/generated files
+.config/opencode/.git/
+.config/opencode/node_modules/
+.config/opencode/.atl/
+.config/opencode/package.json
+.config/opencode/package-lock.json
+.config/opencode/bun.lock
