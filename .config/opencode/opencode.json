@@ -146,7 +146,7 @@
     },
     "sdd-orchestrator": {
       "color": "info",
-      "description": "Agent Teams Orchestrator - coordinates sub-agents, never does work inline",
+      "description": "SDD Orchestrator - coordinates sub-agents, never does work inline",
       "mode": "primary",
       "permission": {
         "task": {

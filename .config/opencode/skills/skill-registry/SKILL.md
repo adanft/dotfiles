@@ -45,12 +45,12 @@ This is the foundation of the **Skill Resolver Protocol** (see `_shared/skill-re
 
 ### Step 1b: Generate Compact Rules
 
-For each skill found in Step 1, generate a **compact rules block** (5-15 lines max) containing:
+For each skill found in Step 1, generate a **compact rules block** (5-15 lines max) containing ONLY:
 - Actionable rules and constraints ("do X", "never Y", "prefer Z over W")
 - Key patterns with one-line examples where critical
 - Breaking changes or gotchas that would cause bugs if missed
 
-Exclude purpose/motivation, when-to-use text, full code examples, installation steps, or anything the sub-agent does not need to apply the skill.
+**DO NOT include**: purpose/motivation, when-to-use text, full code examples, installation steps, or anything the sub-agent does not need to apply the skill.
 
 Format per skill:
 ```markdown
