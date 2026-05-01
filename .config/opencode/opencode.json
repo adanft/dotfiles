@@ -261,11 +261,7 @@
       "url": "https://mcp.context7.com/mcp"
     },
     "engram": {
-      "command": [
-        "/home/dioby/.local/bin/engram",
-        "mcp",
-        "--tools=agent"
-      ],
+      "command": ["/home/dioby/.local/bin/engram", "mcp", "--tools=agent"],
       "type": "local"
     }
   },
@@ -285,7 +281,9 @@
     "external_directory": {
       "*": "ask",
       "~/.config/opencode/**": "allow",
-      "~/.cargo/registry/**": "allow"
+      "~/.cargo/registry/**": "allow",
+      "~/.claude/**": "allow",
+      "~/go/pkg/**": "allow"
     },
     "read": {
       "*": "allow",
@@ -297,10 +295,7 @@
       "*.env.*": "deny"
     }
   },
-  "plugin": [
-    "opencode-gemini-auth@latest",
-    "opencode-claude-auth@latest"
-  ],
+  "plugin": ["opencode-gemini-auth@latest"],
   "provider": {
     "ollama": {
       "models": {

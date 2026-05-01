@@ -74,7 +74,7 @@ The orchestrator persists DAG state after each phase transition to enable SDD re
 - `none` → do NOT create or modify any project files; return results inline only when a legacy caller explicitly requested it
 - Create `openspec/` when the resolved SDD fallback mode is `openspec`
 - In `openspec`, `sdd-apply` writes cumulative progress to `openspec/changes/{change-name}/apply-progress.md`; `sdd-verify` reads it when present.
-- The `skill_registry_cache` route is optional local cache only. It is never a required SDD artifact and never determines persistence mode.
+- The `skill_registry_cache` route is optional project-local cache only. It is never a required SDD artifact and never determines persistence mode.
 
 ## Sub-Agent Context Rules
 
@@ -140,7 +140,7 @@ If you return without calling mem_save, the next phase CANNOT find your artifact
 
 The orchestrator pre-resolves compact rules from the skill registry and injects them as `## Project Standards (auto-resolved)` in your launch prompt when a registry is available. Sub-agents do NOT read the registry or individual SKILL.md files — rules arrive pre-digested.
 
-Preferred source is Engram. The `skill_registry_cache` route is an optional local cache/fallback only.
+Preferred source is Engram. The `skill_registry_cache` route is an optional project-local cache/fallback only.
 
 To generate/update: run the `skill-registry` skill, or run `sdd-init` if local registry generation is desired.
 

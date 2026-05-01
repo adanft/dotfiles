@@ -3,5 +3,5 @@
   "plugin": [
     "opencode-subagent-statusline"
   ],
-  "theme": "gentleman-kanagawa"
+  "theme": "catppuccin"
 }

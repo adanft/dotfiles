@@ -19,7 +19,7 @@ The registry contains a **Compact Rules** section with pre-digested rules per sk
 Resolution order:
 1. Already cached from earlier in this session? → use cache
 2. `mem_search(query: "skill-registry", project: "{project}")` → `mem_get_observation(id)` for full content
-3. Fallback: resolve `skill_registry_cache` from `RUNTIME_PATHS.md` and read it if it exists
+3. Fallback: resolve `skill_registry_cache` from `RUNTIME_PATHS.md` and read it only if Engram is unavailable and the file exists, or if the user explicitly requested using the local cache
 4. No registry found? → proceed without skills (but warn the user: "No skill registry found — sub-agents will work without project-specific standards. Run `skill-registry` to fix this.")
 
 ### Step 2: Match Relevant Skills

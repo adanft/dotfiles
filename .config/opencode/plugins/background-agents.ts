@@ -566,13 +566,12 @@ class DelegationManager {
       mode?: string
     }[]
     const validAgent = agents.find(
-      (a) =>
-        a.name === input.agent && (a.mode === "subagent" || a.mode === "all" || !a.mode),
+      (a) => a.name === input.agent && a.mode === "subagent",
     )
 
     if (!validAgent) {
       const available = agents
-        .filter((a) => a.mode === "subagent" || a.mode === "all" || !a.mode)
+        .filter((a) => a.mode === "subagent")
         .map((a) => `• ${a.name}${a.description ? ` - ${a.description}` : ""}`)
         .join("\n")
 
@@ -968,11 +967,35 @@ Use delegation_read(id) to retrieve the full result.`
   /**
    * List all delegations for a session
    */
+  async belongsToSessionTree(
+    parentSessionID: string,
+    rootSessionID: string,
+    rootByParent: Map<string, string>,
+  ): Promise<boolean> {
+    let delegationRootID = rootByParent.get(parentSessionID)
+    if (!delegationRootID) {
+      delegationRootID = await this.getRootSessionID(parentSessionID)
+      rootByParent.set(parentSessionID, delegationRootID)
+    }
+
+    return delegationRootID === rootSessionID
+  }
+
   async listDelegations(sessionID: string): Promise<DelegationListItem[]> {
     const results: DelegationListItem[] = []
+    const rootSessionID = await this.getRootSessionID(sessionID)
+    const rootByParent = new Map<string, string>()
 
-    // Add in-memory delegations that match this session (or parent)
+    // Add only in-memory delegations that belong to this session tree.
     for (const delegation of this.delegations.values()) {
+      if (
+        !(await this.belongsToSessionTree(
+          delegation.parentSessionID,
+          rootSessionID,
+          rootByParent,
+        ))
+      ) continue
+
       results.push({
         id: delegation.id,
         status: delegation.status,
@@ -1265,7 +1288,7 @@ You have tools for parallel background work:
 | \`delegate\` | Async, background, persisted to disk | You want to continue working while it runs |
 | \`task\` | Synchronous, blocks until complete | You need the result before continuing |
 
-Use \`delegate\` from coordinating agents or read-only sub-agents. Target agents must be subagents (or agents explicitly exposed with mode \`all\`). Results survive context compaction.
+Use \`delegate\` from coordinating agents or read-only sub-agents. Target agents must have mode \`subagent\`. Results survive context compaction.
 
 ## How It Works
 
@@ -1408,14 +1431,17 @@ export const BackgroundAgents: Plugin = async (ctx) => {
       output: { context: string[]; prompt?: string },
     ) => {
       const rootSessionID = await manager.getRootSessionID(input.sessionID)
+      const rootByParent = new Map<string, string>()
 
       // Get running delegations for this session tree
-      const running = manager
-        .getRunningDelegations()
-        .filter(
-          (d) =>
-            d.parentSessionID === input.sessionID || d.parentSessionID === rootSessionID,
-        )
+      const runningDelegations: Delegation[] = []
+      for (const delegation of manager.getRunningDelegations()) {
+        if (await manager.belongsToSessionTree(delegation.parentSessionID, rootSessionID, rootByParent)) {
+          runningDelegations.push(delegation)
+        }
+      }
+
+      const running = runningDelegations
         .map((d) => ({
           id: d.id,
           agent: d.agent,

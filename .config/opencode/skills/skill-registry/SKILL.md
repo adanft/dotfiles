@@ -27,11 +27,9 @@ This is the foundation of the **Skill Resolver Protocol** (see `_shared/skill-re
 ### Step 1: Scan Skill Directories
 
 1. Read `RUNTIME_PATHS.md` from the runtime config workspace and resolve these Skill Roots:
-   - `general_skills_root`
+   - `project_opencode_skills_root`
+   - `project_agents_skills_root`
    - `runtime_skills_root`
-   - `current_skill_collection_root`
-   - `project_skills_root`
-   - `project_runtime_skills_root`
 
    Then scan the resolved roots and collect matching `*/SKILL.md` files. Follow the file's resolution rules: skip missing optional paths and scan duplicate absolute paths only once.
 
@@ -76,13 +74,14 @@ Format per skill:
 ### Step 2: Scan Project Conventions
 
 1. Read `RUNTIME_PATHS.md` and resolve these routes from **Agent Instructions** and **Runtime Config**:
-   - `agent_instructions_primary`
-   - `agent_instructions_secondary`
+   - `project_agent_instructions`
+   - `runtime_agent_instructions`
+   - `project_config_file`
    - `runtime_config_file`
-2. **If an index file is found** (e.g., `agents.md`, `AGENTS.md`): read its contents and extract all referenced file paths. These index files typically list project conventions with paths — extract every referenced path and include it in the registry table alongside the index file itself.
+2. **If an instruction file references other files** (e.g., `AGENTS.md` or `CLAUDE.md`): read its contents and extract all referenced file paths. Include both the instruction file and referenced files in the registry table.
 3. For standalone convention files, record the file directly.
-4. For `runtime_config_file`, inspect only known safe workflow markers needed by this registry. Do not include the whole runtime config as a Project Convention, and do not read or extract `mcp`, provider, auth, token, secret, or credential sections unless the user explicitly asks for runtime/MCP/security analysis.
-5. The final table should include the index file AND all paths it references — zero extra hops for sub-agents.
+4. For config file routes, inspect only known safe workflow markers needed by this registry. Do not include the whole runtime config as a Project Convention, and do not read or extract `mcp`, provider, auth, token, secret, or credential sections unless the user explicitly asks for runtime/MCP/security analysis.
+5. The final table should include each instruction/config file AND all paths it references — zero extra hops for sub-agents.
 
 ### Step 3: Build the Registry
 
@@ -147,7 +146,7 @@ mem_save(
 
 `topic_key` ensures upserts — running again updates the same observation.
 
-#### B. Optional local cache:
+#### B. Optional project-local cache:
 
 Write the `skill_registry_cache` route only when one of these is true:
 - The user explicitly asked for a local registry file
@@ -187,7 +186,7 @@ To update after installing/removing skills, run this again.
 
 - Prefer saving to Engram whenever the `mem_save` tool is available
 - Resolve skill/config paths from `RUNTIME_PATHS.md` before scanning; do not invent fallback paths beyond the listed route contract
-- Write the `skill_registry_cache` route only as an optional local cache
+- Write the `skill_registry_cache` route only as an optional project-local cache
 - SKIP `sdd-*`, `_shared`, and `skill-registry` directories when scanning
 - Read SKILL.md files (respecting the 200-line guard in Step 1) to generate accurate compact rules — this is a build-time cost, not a runtime cost
 - Compact rules MUST be 5-15 lines per skill — concise, actionable, no fluff

@@ -93,13 +93,13 @@ SDD is the structured planning layer for substantial changes.
 - Engram `topic_key` upserts overwrite prior artifact content for the same artifact, so SQLite-backed persistence does not imply revision history.
 - `openspec` is the durable reconciled filesystem baseline when you need long-term local spec files and archive trails.
 - If `openspec` is needed and missing, create/bootstrap it during `sdd-init`.
-- The `skill_registry_cache` route is an optional local cache only. It never defines persistence mode semantics.
+- The `skill_registry_cache` route is an optional project-local cache only. It never defines persistence mode semantics.
 
 ### Commands
 
 Skills (appear in autocomplete):
 - `/sdd-init` → initialize SDD context; detects stack, bootstraps persistence
-- `/sdd-explore <topic>` → investigate an idea; reads codebase, compares approaches; no files created
+- `/sdd-explore <topic>` → investigate an idea; reads codebase, compares approaches; no code changes; may persist an exploration artifact for named changes
 - `/sdd-apply [change]` → implement tasks in batches; checks off items as it goes
 - `/sdd-verify [change]` → validate implementation against specs; reports CRITICAL / WARNING / SUGGESTION
 - `/sdd-archive [change]` → close a change and persist final state in the active artifact store
@@ -170,7 +170,7 @@ The orchestrator owns registry resolution in the normal path: it resolves skills
 
 Orchestrator skill resolution (do once per session):
 1. `mem_search(query: "skill-registry", project: "{project}")` → `mem_get_observation(id)` for full registry content
-2. Fallback: resolve `skill_registry_cache` from `RUNTIME_PATHS.md` and read it only if Engram is unavailable and the file already exists
+2. Fallback: resolve `skill_registry_cache` from `RUNTIME_PATHS.md` and read it only if Engram is unavailable and the file already exists, or if the user explicitly requested using the local cache
 3. Cache the **Compact Rules** section and the **Skills** trigger table
 4. If no registry exists, warn user and proceed without project-specific standards
 
@@ -193,7 +193,7 @@ This is a self-correction mechanism. Do NOT ignore fallback reports — they ind
 
 | Concern | Primary owner | Normal path | Exceptional fallback |
 |---|---|---|---|
-| Skill registry / project standards | `sdd-orchestrator` | Resolve registry from Engram, fallback to the `skill_registry_cache` route only when Engram is unavailable, inject compact rules into sub-agent prompts | Sub-agent may self-load registry only as compatibility fallback when standards were not injected; must report `skill_resolution: fallback-registry` |
+| Skill registry / project standards | `sdd-orchestrator` | Resolve registry from Engram, fallback to the `skill_registry_cache` route only when Engram is unavailable or the user explicitly requested using the local cache, inject compact rules into sub-agent prompts | Sub-agent may self-load registry only as compatibility fallback when standards were not injected; must report `skill_resolution: fallback-registry` |
 | Strict TDD mode | `sdd-init` resolves, `sdd-orchestrator` forwards | `sdd-init` persists `strict_tdd`, orchestrator reads backend state and forwards `STRICT TDD MODE IS ACTIVE/INACTIVE` | If TDD mode was not forwarded or cannot be resolved, stop and get explicit user confirmation through the orchestrator |
 
 ### Sub-Agent Context Protocol

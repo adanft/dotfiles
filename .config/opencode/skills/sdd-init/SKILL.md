@@ -104,7 +104,7 @@ Determine whether Strict TDD Mode should be enabled. The resolution follows a pr
 ```
 1. Read from system prompt / agent config (highest priority):
    ├── Search for "strict-tdd-mode" marker in the configured agent prompt/runtime config
-   │   (e.g., `AGENTS.md`, `agents.md`, or the `runtime_config_file` route from `RUNTIME_PATHS.md`)
+   │   (e.g., `AGENTS.md` or the `runtime_config_file` route from `RUNTIME_PATHS.md`)
    ├── If found and says "enabled" → strict_tdd: true
    ├── If found and says "disabled" → strict_tdd: false
    └── This is the preference set by the user in the gentle-ai TUI
@@ -245,14 +245,14 @@ If mode is `openspec` or `hybrid`, also write this as a section in `openspec/con
 Follow the same logic as the `skill-registry` skill (`skills/skill-registry/SKILL.md`):
 
 Resolve configured paths from `RUNTIME_PATHS.md` in the runtime config workspace before scanning:
-- Skill roots: `general_skills_root`, `runtime_skills_root`, `current_skill_collection_root`, `project_skills_root`, and `project_runtime_skills_root`.
-- Agent instruction/config routes: `agent_instructions_primary`, `agent_instructions_secondary`, and `runtime_config_file`.
+- Skill roots: `project_opencode_skills_root`, `project_agents_skills_root`, and `runtime_skills_root`.
+- Agent instruction/config routes: `project_agent_instructions`, `runtime_agent_instructions`, `project_config_file`, and `runtime_config_file`.
 
 1. Scan resolved skill roots and collect `*/SKILL.md`. Skip missing optional paths and scan duplicate absolute paths only once. Skip `sdd-*`, `_shared`, and `skill-registry`. Deduplicate by name using the specificity order in `RUNTIME_PATHS.md`; otherwise keep the first match. Read frontmatter triggers.
-2. Scan resolved convention/config routes. If an index file is found (e.g., `agents.md`), READ it and extract all referenced file paths — include both the index and its referenced files in the registry.
-3. For `runtime_config_file`, inspect only known safe workflow markers needed by SDD init. Do not include the whole runtime config as a Project Convention, and do not read or extract `mcp`, provider, auth, token, secret, or credential sections unless the user explicitly asks for runtime/MCP/security analysis.
+2. Scan resolved convention/config routes. If an instruction file references other file paths, READ it and extract those referenced file paths — include both the instruction file and its referenced files in the registry.
+3. For config file routes, inspect only known safe workflow markers needed by SDD init. Do not include the whole runtime config as a Project Convention, and do not read or extract `mcp`, provider, auth, token, secret, or credential sections unless the user explicitly asks for runtime/MCP/security analysis.
 4. Prefer Engram for registry persistence when available: `mem_save(title: "skill-registry", topic_key: "skill-registry", type: "config", scope: "project", content: "{registry markdown}")`
-5. Write the `skill_registry_cache` route ONLY as an optional local cache when requested, when refreshing an existing cache, or when Engram is unavailable and a local fallback is desired.
+5. Write the `skill_registry_cache` route ONLY as an optional project-local cache when requested, when refreshing an existing cache, or when Engram is unavailable and a local fallback is desired.
 
 The registry is optional. SDD init must still succeed if no local registry cache is written.
 

@@ -26,7 +26,7 @@ metadata:
 
 Follow the **Skill Resolver Protocol** (`_shared/skill-resolver.md`) before launching ANY sub-agent:
 
-1. Obtain the skill registry: search engram (`mem_search(query: "skill-registry", project: "{project}")`) → fallback to the `skill_registry_cache` route from `RUNTIME_PATHS.md` → skip if none
+1. Obtain the skill registry: search engram (`mem_search(query: "skill-registry", project: "{project}")`) → fallback to the `skill_registry_cache` route from `RUNTIME_PATHS.md` only if Engram is unavailable or the user explicitly requested using the local cache → skip if none
 2. Identify the target files/scope — what code will the judges review?
 3. Match relevant skills from the registry's **Compact Rules** by:
    - **Code context**: file extensions/paths of the target (e.g., `.go` → go-testing; `.tsx` → react-19, typescript)

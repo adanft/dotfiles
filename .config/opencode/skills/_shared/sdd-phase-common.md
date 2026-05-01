@@ -6,11 +6,11 @@ Executor boundary: every SDD phase agent is an EXECUTOR, not an orchestrator. Do
 
 ## A. Skill Loading
 
-1. Check if the orchestrator injected a `## Project Standards (auto-resolved)` block in your launch prompt. If yes, follow those rules — they are pre-digested compact rules from the skill registry. **Do NOT read any SKILL.md files or the registry.**
+1. Check if the orchestrator injected a `## Project Standards (auto-resolved)` block in your launch prompt. If yes, follow those rules — they are pre-digested compact rules from the skill registry. **Do NOT read extra project/coding SKILL.md files or the registry. The current phase skill remains authoritative.**
 2. If no Project Standards block was provided, check for `SKILL: Load` instructions. If present, load those exact skill files.
 3. If neither was provided, treat registry loading as an EXCEPTIONAL compatibility fallback and search for the skill registry:
    a. `mem_search(query: "skill-registry", project: "{project}")` — if found, `mem_get_observation(id)` for full content
-   b. Fallback: resolve `skill_registry_cache` from `RUNTIME_PATHS.md` and read it only if Engram is unavailable and the file exists
+   b. Fallback: resolve `skill_registry_cache` from `RUNTIME_PATHS.md` and read it only if Engram is unavailable and the file exists, or if the user explicitly requested using the local cache
    c. From the registry's **Compact Rules** section, apply rules whose triggers match your current task.
 4. If no registry exists, proceed with your phase skill only.
 

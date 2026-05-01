@@ -22,6 +22,6 @@ IMPORTANT:
 - The skill is the source of truth for context retrieval, persistence, and artifact handling.
 - This wrapper passes the topic only. Do NOT duplicate persistence logic here.
 
-This is an exploration only — do NOT create any files or modify code. Just research and return your analysis.
+This is an exploration only — do NOT modify code or project implementation files. If tied to a named SDD change, the executor may persist the exploration artifact according to the active artifact store.
 
 Return the full structured envelope defined by `skills/_shared/sdd-phase-common.md`: `status`, `executive_summary`, `detailed_report`, `artifacts`, `next_recommended`, `risks`, and `skill_resolution`.
