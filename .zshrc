@@ -1,7 +1,6 @@
 # Set Unicode format, but is not necessary
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-export PATH="$PATH:$HOME/.dotnet/tools"
 
 # Auto-start tmux for interactive terminal shells.
 WM_VAR="/$TMUX"
@@ -91,28 +90,5 @@ alias ff="fastfetch"
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
-source /usr/share/nvm/init-nvm.sh
-
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
 
 eval "$(zoxide init zsh)"
-
-# opencode
-export PATH="$HOME/.opencode/bin:$PATH"
-
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"

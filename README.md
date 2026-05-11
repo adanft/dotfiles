@@ -17,11 +17,53 @@ Personal Linux desktop dotfiles focused on Hyprland, Waybar, Zsh, Tmux and termi
 - pactl
 - alacritty
 
+## Tmux setup
+- Install `tmux`, `git`, and `wl-clipboard`
+- Copy `.tmux.conf` to `$HOME/.tmux.conf`
+- Copy `.tmux/` to `$HOME/.tmux/`
+- Install TPM:
+  ```sh
+  mkdir -p ~/.tmux/plugins
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  ```
+- Open tmux and install the configured plugins with `prefix + I`
+
+Only the tmux configuration and helper scripts are tracked here. Do not copy plugin directories into the repository; TPM installs them on each machine.
+
+### Tmux configuration
+- Prefix: `Ctrl-a`
+- Mouse support enabled
+- Status bar at the top
+- Vi keys in copy mode
+- Windows and panes start at index `1`
+- Windows are renumbered automatically
+- History limit: `10000`
+- Reload config: `prefix + r`
+- Split panes in the current directory:
+  - `prefix + v` for horizontal split
+  - `prefix + d` for vertical split
+- Destructive actions ask for confirmation before killing panes, windows, or sessions
+- Sessions are preserved when the client terminal detaches or closes
+
+### Tmux plugins
+- `tmux-plugins/tpm`
+- `tmux-plugins/tmux-resurrect`
+- `tmux-plugins/tmux-continuum`
+- `tmux-plugins/tmux-yank`
+- `christoomey/vim-tmux-navigator`
+- `alexwforsythe/tmux-which-key`
+
+The plugin repositories are not part of these dotfiles. TPM/plugin installation is done on the target machine.
+
 ## Zsh setup
-- Install `zsh`, `git`, `lsd`, `bat`, and `fzf`
+- Install `zsh`, `git`, `tmux`, `fzf`, `zoxide`, `lsd`, `bat`, `fastfetch`, and `neovim`
 - Change your default shell with `chsh -s $(which zsh)` and relog if needed
-- Create and copy the `.zshrc` file if it does not exist
+- Copy `.zshrc` and `.colors.sh` to `$HOME/`
+- Make sure the `en_US.UTF-8` locale is generated on your system
 - Use a Nerd Font in your terminal
+- Copy `.config/starship/starship.toml` to `$HOME/.config/starship/starship.toml`
+
+The first Zsh startup also needs internet access because `.zshrc` bootstraps Zinit automatically and downloads the configured plugins and Starship prompt.
 
 ## TTY default colors via GRUB kernel parameters
 
