@@ -6,10 +6,6 @@ configuration {
 /*****----- Global Properties -----*****/
 @import                          "../shared/colors.rasi"
 
-/*
-USE_ICON=YES
-*/
-
 /*****----- Main Window -----*****/
 window {
     transparency:                "real";
@@ -41,7 +37,7 @@ mainbox {
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
-    columns:                     6;
+    columns:                     5;
     lines:                       1;
     cycle:                       true;
     scrollbar:                   false;

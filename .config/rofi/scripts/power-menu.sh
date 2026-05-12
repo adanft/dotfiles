@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Current Theme
-dir="$HOME/.config/rofi/themes"
-theme='power-menu'
+theme="$HOME/.config/rofi/themes/power-menu.rasi"
+confirm_theme="$HOME/.config/rofi/shared/confirm.rasi"
 
-# Options
 shutdown=''
 reboot=''
 lock=''
@@ -13,73 +11,20 @@ logout=''
 yes=''
 no=''
 
-# Current Session Type
-xdg="hyprland"
-
-# Rofi CMD
-rofi_cmd() {
-	rofi -dmenu \
-		-theme ${dir}/${theme}.rasi
+confirm() {
+	[[ "$(printf '%s\n%s\n' "$yes" "$no" | rofi -dmenu -theme "$confirm_theme")" == "$yes" ]]
 }
 
-# Confirmation CMD
-confirm_cmd() {
-	rofi -dmenu \
-		-theme ${dir}/../shared/confirm.rasi
+confirm_and_run() {
+	confirm && "$@"
 }
 
-# Ask for confirmation
-confirm_exit() {
-	echo -e "$yes\n$no" | confirm_cmd
-}
+chosen="$(printf '%s\n%s\n%s\n%s\n%s\n' "$lock" "$suspend" "$logout" "$reboot" "$shutdown" | rofi -dmenu -theme "$theme")"
 
-# Pass variables to rofi dmenu
-run_rofi() {
-	echo -e "$lock\n$suspend\n$logout\n$reboot\n$shutdown" | rofi_cmd
-}
-
-# Execute Command
-run_cmd() {
-	selected="$(confirm_exit)"
-	if [[ "$selected" == "$yes" ]]; then
-		if [[ $1 == '--shutdown' ]]; then
-			systemctl poweroff
-		elif [[ $1 == '--reboot' ]]; then
-			systemctl reboot
-		elif [[ $1 == '--suspend' ]]; then
-			systemctl suspend
-		elif [[ $1 == '--logout' ]]; then
-			if [[ $xdg == 'hyprland' ]]; then
-				hyprctl dispatch exit
-      elif [[ $xdg == 'qtile' ]]; then
-        qtile cmd-obj -o cmd -f shutdown
-			fi
-		fi
-	else
-		exit 0
-	fi
-}
-
-# Actions
-chosen="$(run_rofi)"
-case ${chosen} in
-    $shutdown)
-		run_cmd --shutdown
-        ;;
-    $reboot)
-		run_cmd --reboot
-        ;;
-    $lock)
-		if [[ $xdg == 'qtile' ]]; then
-			$HOME/.config/qtile/lock
-		elif [[ $xdg == 'hyprland' ]]; then
-			loginctl lock-session
-		fi
-        ;;
-    $suspend)
-		run_cmd --suspend
-        ;;
-    $logout)
-		run_cmd --logout
-        ;;
+case "$chosen" in
+	"$shutdown") confirm_and_run systemctl poweroff ;;
+	"$reboot") confirm_and_run systemctl reboot ;;
+	"$suspend") confirm_and_run systemctl suspend ;;
+	"$logout") confirm_and_run hyprctl dispatch 'hl.dsp.exit()' ;;
+	"$lock") loginctl lock-session ;;
 esac

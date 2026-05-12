@@ -109,7 +109,7 @@
     "format-connected": "󰂱 {num_connections}",
     "tooltip-format": "{controller_alias}  󰂲",
     "tooltip-format-connected": "{controller_alias}  {device_alias}",
-    "on-click": "hyprctl dispatch exec '[float] blueman-manager'",
+    "on-click": "hyprctl dispatch 'hl.dsp.exec_cmd(\"[float] blueman-manager\")'",
     "interval": 1
   },
   "wireplumber": {

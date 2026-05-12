@@ -1,132 +1,87 @@
 #!/usr/bin/bash
 
 theme="$HOME/.config/rofi/themes/screenshot.rasi"
-icon="/usr/share/icons/candy-icons/apps/scalable/kscreensaver.svg"
-time_icon="/usr/share/icons/candy-icons/apps/scalable/ktimer.svg"
+icon="$HOME/.local/share/icons/candy-icons/apps/scalable/kscreensaver.svg"
+time_icon="$HOME/.local/share/icons/candy-icons/apps/scalable/ktimer.svg"
+dir="$(xdg-user-dir PICTURES)/Screenshots"
+file="screenshot_$(date +%Y-%m-%d-%H-%M-%S).png"
 
-option_1="󰍹"
-option_2="󱓺"
-option_3=""
-option_4=""
-option_5=""
+screen='󰍹'
+area='󱓺'
+window=''
+delay5=''
+delay10=''
 
-rofi_cmd() {
-	rofi -dmenu -theme ${theme}
-}
-
-run_rofi() {
-	echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5" | rofi_cmd
-}
-
-time=`date +%Y-%m-%d-%H-%M-%S`
-dir="`xdg-user-dir PICTURES`/Screenshots"
-file="screenshot_${time}.png"
-
-if [[ ! -d "$dir" ]]; then
-	mkdir -p "$dir"
-fi
+mkdir -p "$dir"
 
 notify_view() {
-	notify_cmd_shot="notify-send -u low -i $icon"
-	
-	if command -v imv >/dev/null 2>&1; then
-		imv ${dir}/"$file" &
-	elif command -v feh >/dev/null 2>&1; then
-		feh ${dir}/"$file" &
-	fi
-	
-	if [[ -e "$dir/$file" ]]; then
-		${notify_cmd_shot} "Screenshot Copied and Saved."
+	local path="$dir/$file"
+
+	if [[ -e "$path" ]]; then
+		if command -v imv >/dev/null 2>&1; then
+			imv "$path" &
+		elif command -v feh >/dev/null 2>&1; then
+			feh "$path" &
+		fi
+
+		notify-send -u low -i "$icon" "Screenshot Copied and Saved."
 	else
-		${notify_cmd_shot} "Screenshot Deleted."
+		notify-send -u low -i "$icon" "Screenshot Deleted."
 	fi
 }
 
 copy_shot() {
-  tee "$file" | wl-copy --type image/png
+	tee "$dir/$file" | wl-copy --type image/png
 }
 
 countdown() {
-	for sec in `seq $1 -1 1`; do
+	for ((sec = $1; sec > 0; sec--)); do
 		notify-send -t 1000 -i "$time_icon" "Taking shot in : $sec"
 		sleep 1
 	done
 }
 
-shotnow() {
-	cd ${dir} && sleep 0.5 && grim -t png - | copy_shot
+take_shot() {
+	local geometry="$1"
+
+	if [[ -n "$geometry" ]]; then
+		grim -g "$geometry" -t png - | copy_shot
+	else
+		grim -t png - | copy_shot
+	fi
+
 	notify_view
 }
 
-shot5() {
-	countdown '5'
-	sleep 1 && cd ${dir} && grim -t png - | copy_shot
-	notify_view
-}
+shot_window() {
+	local geometry
+	geometry="$(hyprctl activewindow -j | jq -r 'select(.at != null and .size != null) | "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')"
 
-shot10() {
-	countdown '10'
-	sleep 1 && cd ${dir} && grim -t png - | copy_shot
-	notify_view
-}
-
-shotwin() {
-	local active_window=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
-	
-	if [[ "$active_window" != "null,null nullxnull" ]]; then
-		sleep 0.5 && cd ${dir} && grim -g "$active_window" -t png - | copy_shot
-		notify_view
+	if [[ -n "$geometry" ]]; then
+		sleep 0.5
+		take_shot "$geometry"
 	else
 		notify-send -t 3000 "  No active window found"
 	fi
 }
 
-shotarea() {
-	local area=$(slurp)
-	
-	if [[ -n "$area" ]]; then
-		cd ${dir} && grim -g "$area" -t png - | copy_shot
-		notify_view
+shot_area() {
+	local geometry
+	geometry="$(slurp)"
+
+	if [[ -n "$geometry" ]]; then
+		take_shot "$geometry"
 	else
 		notify-send -t 3000 "󰜺  Screenshot cancelled"
 	fi
 }
 
-run_cmd() {
-	case "$1" in
-		'--opt1')
-			shotnow
-			;;
-		'--opt2')
-			shotarea
-			;;
-		'--opt3')
-			shotwin
-			;;
-		'--opt4')
-			shot5
-			;;
-		'--opt5')
-			shot10
-			;;
-	esac
-}
+chosen="$(printf '%s\n%s\n%s\n%s\n%s\n' "$screen" "$area" "$window" "$delay5" "$delay10" | rofi -dmenu -theme "$theme")"
 
-chosen="$(run_rofi)"
-case ${chosen} in
-    $option_1)
-		run_cmd --opt1
-        ;;
-    $option_2)
-		run_cmd --opt2
-        ;;
-    $option_3)
-		run_cmd --opt3
-        ;;
-    $option_4)
-		run_cmd --opt4
-        ;;
-    $option_5)
-		run_cmd --opt5
-        ;;
+case "$chosen" in
+	"$screen") sleep 0.5; take_shot ;;
+	"$area") shot_area ;;
+	"$window") shot_window ;;
+	"$delay5") countdown 5; sleep 1; take_shot ;;
+	"$delay10") countdown 10; sleep 1; take_shot ;;
 esac

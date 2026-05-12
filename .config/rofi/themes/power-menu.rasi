@@ -7,9 +7,6 @@ configuration {
 * {
     mainbox-spacing:             100px;
     mainbox-margin:              150px 460px;
-    message-margin:              0px 350px;
-    message-padding:             20px;
-    message-border-radius:       100%;
     listview-spacing:            50px;
     element-padding:             35px 40px;
     element-border-radius:       100%;
