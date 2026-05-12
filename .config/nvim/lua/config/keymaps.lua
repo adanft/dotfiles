@@ -1,7 +1,7 @@
 local map = vim.keymap.set
 
 map({ "n", "v" }, "<leader>fm", function()
-  require("conform").format { lsp_fallback = true, timeout_ms = 500 }
+  require("conform").format { lsp_format = "fallback", timeout_ms = 500 }
 end, { desc = "Format file" })
 map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find files" })
 map("n", "<leader>cd", "<cmd>CodeDiff<CR>", { desc = "Git diff changes" })
@@ -15,10 +15,6 @@ map("n", "<leader>sl", function() require("persistence").load() end, { desc = "R
 map("n", "<leader>ss", function() require("persistence").select() end, { desc = "Select Session" })
 map("n", "<leader>sL", function() require("persistence").load { last = true } end, { desc = "Restore Last Session" })
 map("n", "<leader>sx", function() require("persistence").stop() end, { desc = "Don't Save Current Session" })
-
--- Comments
-map("n", "<C-/>", "gcc", { desc = "Toggle Comment", remap = true })
-map("v", "<C-/>", "gc",  { desc = "Toggle Comment", remap = true })
 
 -- Select all
 map('n', '<C-e>', 'ggVG', { desc = 'Select all' })

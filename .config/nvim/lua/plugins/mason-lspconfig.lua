@@ -5,7 +5,17 @@ return {
     "neovim/nvim-lspconfig",
   },
   opts = {
-    ensure_installed = { "lua_ls", "ts_ls", "tailwindcss", "biome", "ruff", "rust_analyzer", "slint_lsp", "gopls" },
+    ensure_installed = {
+      "lua_ls",
+      "ts_ls",
+      "tailwindcss",
+      "biome",
+      "ruff",
+      "rust_analyzer",
+      "slint_lsp",
+      "gopls",
+      "jsonls",
+    },
     automatic_enable = true,
   },
 }
