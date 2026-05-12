@@ -231,23 +231,6 @@ slider {
   background-color: #89b4fa;
 }
 
-.control-center-dnd {
-  margin-top: 5px;
-  border-radius: 8px;
-  background: #313244;
-  border: 1px solid #45475a;
-  box-shadow: none;
-}
-
-.control-center-dnd:checked {
-  background: #313244;
-}
-
-.control-center-dnd slider {
-  background: #45475a;
-  border-radius: 8px;
-}
-
 .widget-dnd {
   margin: 0px;
   font-size: 1.1rem;
@@ -269,73 +252,6 @@ slider {
   background: #45475a;
   border-radius: 8px;
   border: 1px solid #6c7086;
-}
-
-.widget-mpris .widget-mpris-player {
-  background: #313244;
-  padding: 7px;
-}
-
-.widget-mpris .widget-mpris-title {
-  font-size: 1.2rem;
-}
-
-.widget-mpris .widget-mpris-subtitle {
-  font-size: 0.8rem;
-}
-
-.widget-menubar > box > .menu-button-bar > button > label {
-  font-size: 3rem;
-  padding: 0.5rem 2rem;
-}
-
-.widget-menubar > box > .menu-button-bar > :last-child {
-  color: #f38ba8;
-}
-
-.power-buttons button:hover,
-.powermode-buttons button:hover,
-.screenshot-buttons button:hover {
-  background: #313244;
-}
-
-.control-center .widget-label > label {
-  color: #cdd6f4;
-  font-size: 2rem;
-}
-
-.widget-buttons-grid {
-  padding-top: 1rem;
-}
-
-.widget-buttons-grid > flowbox > flowboxchild > button label {
-  font-size: 2.5rem;
-}
-
-.widget-volume {
-  padding-top: 1rem;
-}
-
-.widget-volume label {
-  font-size: 1.5rem;
-  color: #74c7ec;
-}
-
-.widget-volume trough highlight {
-  background: #74c7ec;
-}
-
-.widget-backlight trough highlight {
-  background: #f9e2af;
-}
-
-.widget-backlight label {
-  font-size: 1.5rem;
-  color: #f9e2af;
-}
-
-.widget-backlight .KB {
-  padding-bottom: 1rem;
 }
 
 .image {
