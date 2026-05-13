@@ -94,6 +94,7 @@ OpenCode already includes built-in agents such as:
 - `plan`
 - `general`
 - `explore`
+- `scout`
 
 Do not recreate built-ins unless the user explicitly wants a custom variant.
 
@@ -154,12 +155,13 @@ Relevant permission keys include:
 - `question`
 - `webfetch`
 - `websearch`
-- `codesearch`
+- `repo_clone`
+- `repo_overview`
 - `external_directory`
 - `todowrite`
 - `doom_loop`
 
-`edit` controls all file modifications, including `write`, `apply_patch`, and `multiedit` behavior.
+`edit` controls all file modifications, including `edit`, `write`, and `apply_patch`.
 
 For `bash`, pattern matching is applied to commands. A safe pattern is to put `"*"` first and add specific allow rules after it.
 
