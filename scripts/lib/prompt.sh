@@ -5,7 +5,9 @@ have_gum() {
 }
 
 interactive_terminal() {
-  [[ -t 0 && -t 1 ]]
+  # stdout may be captured by command substitution when callers need the
+  # selected value. Use stderr for interactivity because prompts render there.
+  [[ -t 0 && -t 2 ]]
 }
 
 gum_confirm_or_prompt() {
@@ -16,15 +18,8 @@ gum_confirm_or_prompt() {
     return $?
   fi
 
-  if ! interactive_terminal; then
-    log_warn "No interactive terminal available; refusing confirmation for: $message"
-    return 1
-  fi
-
-  local answer
-  printf '%s [y/N]: ' "$message" >&2
-  read -r answer
-  [[ "$answer" =~ ^[Yy]$|^[Yy][Ee][Ss]$ ]]
+  log_warn "gum is required for confirmation prompts: $message"
+  return 1
 }
 
 gum_choose_or_default() {
@@ -38,40 +33,6 @@ gum_choose_or_default() {
     return $?
   fi
 
-  if ! interactive_terminal; then
-    log_warn "No interactive terminal available; using detected default: $default"
-    printf '%s\n' "$default"
-    return 0
-  fi
-
-  log_warn "gum prompt is unavailable; using basic text prompt."
-  printf '%s\n' "$prompt" >&2
-
-  local index choice answer
-  for index in "${!choices[@]}"; do
-    printf '  %d) %s\n' "$((index + 1))" "${choices[$index]}" >&2
-  done
-
-  printf 'Choose profile [%s]: ' "$default" >&2
-  read -r answer
-
-  [[ -z "$answer" ]] && {
-    printf '%s\n' "$default"
-    return 0
-  }
-
-  if [[ "$answer" =~ ^[0-9]+$ ]] && (( answer >= 1 && answer <= ${#choices[@]} )); then
-    printf '%s\n' "${choices[$((answer - 1))]}"
-    return 0
-  fi
-
-  for choice in "${choices[@]}"; do
-    if [[ "$answer" == "$choice" ]]; then
-      printf '%s\n' "$choice"
-      return 0
-    fi
-  done
-
-  log_warn "Invalid choice: $answer"
+  log_warn "gum is required for selection prompts: $prompt"
   return 1
 }
