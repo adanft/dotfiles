@@ -3,59 +3,9 @@
 -----------------
 
 local colors = {
-  rosewater = "rgb(f5e0dc)",
-  rosewaterAlpha = "f5e0dc",
-  flamingo = "rgb(f2cdcd)",
-  flamingoAlpha = "f2cdcd",
-  pink = "rgb(f5c2e7)",
-  pinkAlpha = "f5c2e7",
   mauve = "rgb(cba6f7)",
-  mauveAlpha = "cba6f7",
-  red = "rgb(f38ba8)",
-  redAlpha = "f38ba8",
-  maroon = "rgb(eba0ac)",
-  maroonAlpha = "eba0ac",
-  peach = "rgb(fab387)",
-  peachAlpha = "fab387",
-  yellow = "rgb(f9e2af)",
-  yellowAlpha = "f9e2af",
-  green = "rgb(a6e3a1)",
-  greenAlpha = "a6e3a1",
-  teal = "rgb(94e2d5)",
-  tealAlpha = "94e2d5",
-  sky = "rgb(89dceb)",
-  skyAlpha = "89dceb",
-  sapphire = "rgb(74c7ec)",
-  sapphireAlpha = "74c7ec",
-  blue = "rgb(89b4fa)",
-  blueAlpha = "89b4fa",
-  lavender = "rgb(b4befe)",
-  lavenderAlpha = "b4befe",
-  text = "rgb(cdd6f4)",
-  textAlpha = "cdd6f4",
-  subtext1 = "rgb(bac2de)",
-  subtext1Alpha = "bac2de",
-  subtext0 = "rgb(a6adc8)",
-  subtext0Alpha = "a6adc8",
-  overlay2 = "rgb(9399b2)",
-  overlay2Alpha = "9399b2",
-  overlay1 = "rgb(7f849c)",
-  overlay1Alpha = "7f849c",
   overlay0 = "rgb(6c7086)",
-  overlay0Alpha = "6c7086",
-  surface2 = "rgb(585b70)",
-  surface2Alpha = "585b70",
-  surface1 = "rgb(45475a)",
-  surface1Alpha = "45475a",
-  surface0 = "rgb(313244)",
-  surface0Alpha = "313244",
   base = "rgb(1e1e2e)",
-  baseAlpha = "1e1e2e",
-  mantle = "rgb(181825)",
-  mantleAlpha = "181825",
-  crust = "rgb(11111b)",
-  crustAlpha = "11111b",
-  transparent = "rgba(00ffffff)",
 }
 
 --------------
@@ -90,7 +40,7 @@ hl.workspace_rule({ workspace = "9", monitor = "DP-1" })
 -------------
 
 local terminal = "ghostty"
-local terminal_code = "kitty"
+local secondary_terminal = "kitty"
 local file_manager = "thunar"
 local menu = "rofi -no-config -no-lazy-grab -show drun -modi drun -theme ~/.config/rofi/themes/launcher.rasi"
 local picker = "hyprpicker -a"
@@ -109,7 +59,6 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("hypridle")
   hl.exec_cmd("swaync")
   hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
-  hl.exec_cmd("$HOME/.config/hypr/scripts/gdk_script")
 end)
 
 -----------------
@@ -154,7 +103,12 @@ hl.config({
     new_status = "master",
   },
 
+  input = {
+    accel_profile = "flat",
+  },
+
   misc = {
+    background_color = colors.base,
     force_default_wallpaper = 0,
     disable_hyprland_logo = true,
   },
@@ -187,18 +141,6 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 1.94, bezier = "almo
 hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.21, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
 
------------
--- Input --
------------
-
--- Get device names with:
---   hyprctl devices
--- Use the exact device name shown by Hyprland.
-hl.device({
-  name = "usb-gaming-mouse",
-  accel_profile = "flat",
-})
-
 -------------
 -- Keybinds --
 -------------
@@ -206,7 +148,7 @@ hl.device({
 local main_mod = "SUPER"
 
 hl.bind(main_mod .. " + RETURN", hl.dsp.exec_cmd(terminal))
-hl.bind(main_mod .. " + SHIFT + RETURN", hl.dsp.exec_cmd(terminal_code))
+hl.bind(main_mod .. " + SHIFT + RETURN", hl.dsp.exec_cmd(secondary_terminal))
 hl.bind(main_mod .. " + Q", hl.dsp.window.close())
 hl.bind(main_mod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 hl.bind(main_mod .. " + SPACE", hl.dsp.window.float({ action = "toggle" }))

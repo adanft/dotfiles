@@ -8,9 +8,10 @@ file="screenshot_$(date +%Y-%m-%d-%H-%M-%S).png"
 
 screen='󰍹'
 area='󱓺'
+area_no_preview='󰩫'
 window=''
-delay5=''
-delay10=''
+delay10=''
+delay5=''
 
 mkdir -p "$dir"
 
@@ -43,6 +44,7 @@ countdown() {
 
 take_shot() {
 	local geometry="$1"
+	local preview="${2:-true}"
 
 	if [[ -n "$geometry" ]]; then
 		grim -g "$geometry" -t png - | copy_shot
@@ -50,7 +52,11 @@ take_shot() {
 		grim -t png - | copy_shot
 	fi
 
-	notify_view
+	if [[ "$preview" == "true" ]]; then
+		notify_view
+	else
+		notify-send -u low -i "$icon" "Screenshot Copied and Saved."
+	fi
 }
 
 shot_window() {
@@ -67,20 +73,22 @@ shot_window() {
 
 shot_area() {
 	local geometry
+	local preview="${1:-true}"
 	geometry="$(slurp)"
 
 	if [[ -n "$geometry" ]]; then
-		take_shot "$geometry"
+		take_shot "$geometry" "$preview"
 	else
 		notify-send -t 3000 "󰜺  Screenshot cancelled"
 	fi
 }
 
-chosen="$(printf '%s\n%s\n%s\n%s\n%s\n' "$screen" "$area" "$window" "$delay5" "$delay10" | rofi -dmenu -theme "$theme")"
+chosen="$(printf '%s\n%s\n%s\n%s\n%s\n%s\n' "$screen" "$area" "$window" "$delay5" "$delay10" "$area_no_preview" | rofi -dmenu -theme "$theme")"
 
 case "$chosen" in
 	"$screen") sleep 0.5; take_shot ;;
 	"$area") shot_area ;;
+	"$area_no_preview") shot_area false ;;
 	"$window") shot_window ;;
 	"$delay5") countdown 5; sleep 1; take_shot ;;
 	"$delay10") countdown 10; sleep 1; take_shot ;;

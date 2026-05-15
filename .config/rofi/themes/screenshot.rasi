@@ -12,7 +12,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       670px;
+    width:                       790px;
     x-offset:                    0px;
     y-offset:                    0px;
     margin:                      0px;
@@ -37,7 +37,7 @@ mainbox {
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
-    columns:                     5;
+    columns:                     6;
     lines:                       1;
     cycle:                       true;
     scrollbar:                   false;

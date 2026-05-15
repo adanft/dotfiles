@@ -1,8 +1,7 @@
 #!/bin/bash
 
 current_workspace=$(hyprctl -j activewindow | jq -r '.workspace.id')
-
-workspaces=9
+workspaces=$(hyprctl -j workspacerules | jq '[.[] | .workspaceString | select(test("^[0-9]+$")) | tonumber] | max')
 
 dir=$1
 

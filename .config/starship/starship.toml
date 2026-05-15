@@ -8,8 +8,10 @@ vicmd_symbol = "[](bold yellow)"
 [directory]
 style = "bold blue"
 read_only = ""
+truncation_symbol = ".../"
 
 [cmd_duration]
+min_time = 1000
 format = "[](purple) [$duration]($style) "
 
 [python]
@@ -30,4 +32,3 @@ symbol = " "
 [bun]
 symbol = " "
 style = "bold yellow"
-

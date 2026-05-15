@@ -2,22 +2,29 @@
   all: unset;
   font-size: 16px;
   font-family: "SF Pro Display", "Symbols Nerd Font";
+}
+
+.floating-notifications.background .notification-row .notification-background,
+.control-center .notification-row .notification-background,
+.notification-action,
+.close-button,
+.control-center .widget-title button,
+.widget-dnd > switch,
+.widget-dnd > switch slider {
   transition: 200ms;
 }
 
-trough highlight {
-  background: #cdd6f4;
+.notification .notification-content {
+  margin: 7px;
 }
 
-scale trough {
-  margin: 0rem 1rem;
-  background-color: #313244;
-  min-height: 8px;
-  min-width: 70px;
+.notification .summary,
+.notification .body {
+  color: #cdd6f4;
 }
 
-slider {
-  background-color: #89b4fa;
+.notification .time {
+  color: #a6adc8;
 }
 
 .floating-notifications.background .notification-row .notification-background {
@@ -37,22 +44,6 @@ slider {
 
 .floating-notifications.background .notification-row .notification-background .notification.critical {
   box-shadow: inset 0 0 7px 0 #f38ba8;
-}
-
-.floating-notifications.background .notification-row .notification-background .notification .notification-content {
-  margin: 7px;
-}
-
-.floating-notifications.background .notification-row .notification-background .notification .notification-content .summary {
-  color: #cdd6f4;
-}
-
-.floating-notifications.background .notification-row .notification-background .notification .notification-content .time {
-  color: #a6adc8;
-}
-
-.floating-notifications.background .notification-row .notification-background .notification .notification-content .body {
-  color: #cdd6f4;
 }
 
 .floating-notifications.background .notification-row .notification-background .notification > *:last-child > * {
@@ -148,22 +139,6 @@ slider {
   box-shadow: inset 0 0 7px 0 #f38ba8;
 }
 
-.control-center .notification-row .notification-background .notification .notification-content {
-  margin: 7px;
-}
-
-.control-center .notification-row .notification-background .notification .notification-content .summary {
-  color: #cdd6f4;
-}
-
-.control-center .notification-row .notification-background .notification .notification-content .time {
-  color: #a6adc8;
-}
-
-.control-center .notification-row .notification-background .notification .notification-content .body {
-  color: #cdd6f4;
-}
-
 .control-center .notification-row .notification-background .notification > *:last-child > * {
   min-height: 3.4em;
 }
@@ -232,7 +207,7 @@ slider {
 }
 
 .widget-dnd {
-  margin: 0px;
+  margin: 6px 0 10px;
   font-size: 1.1rem;
 }
 

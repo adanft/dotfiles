@@ -1,41 +1,73 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-  "modules": [
-    "title",
-    "separator",
-    "os",
-    "host",
-    "kernel",
-    "shell",
-    "display",
-    "wm",
-    "theme",
-    "icons",
-    "font",
-    "cursor",
-    "terminal",
-    "terminalfont",
-    "cpu",
-    "gpu",
-    "memory",
-    "locale",
-    "break"
-  ],
   "logo": {
-    "type": "auto",
-    "source": "arch",
+    "type": "file",
+    "source": "/home/dioby/.config/fastfetch/logo.txt",
     "color": {
-      "1": "blue",
-      "2": "green",
-      "3": "red",
-      "4": "yellow"
+      "1": "#cba6f7",
+      "2": "#89b4fa"
+    },
+    "padding": {
+      "top": 4
     }
   },
   "display": {
     "separator": ": ",
     "color": {
-        "keys": "green",
-        "title": "blue"
+      "keys": "#89b4fa",
+      "title": "#cba6f7",
+      "output": "#cdd6f4",
+      "separator": "#585b70"
+    },
+    "key": {
+      "width": 13
     }
-  }
+  },
+  "modules": [
+    "title",
+    "separator",
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "System",
+      "outputColor": "#cba6f7"
+    },
+    "os",
+    "kernel",
+    "uptime",
+    "packages",
+    "break",
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "Desktop",
+      "outputColor": "#cba6f7"
+    },
+    "shell",
+    "terminal",
+    "wm",
+    "theme",
+    "icons",
+    "font",
+    "cursor",
+    "break",
+    {
+      "type": "custom",
+      "key": " ",
+      "format": "Hardware",
+      "outputColor": "#cba6f7"
+    },
+    "cpu",
+    "gpu",
+    "memory",
+    {
+      "type": "disk",
+      "folders": "/"
+    },
+    {
+      "type": "display",
+      "key": "Display",
+      "format": "{width}x{height} @ {refresh-rate} Hz [{name}]"
+    }
+  ]
 }
