@@ -48,7 +48,7 @@ confirm_profile() {
   choice="$(gum_choose_or_default \
     "Confirm installer profile" \
     "$DETECTED_PROFILE" \
-    "$DETECTED_PROFILE" laptop desktop vm)" || return 1
+    laptop desktop vm)" || return 1
 
   SELECTED_PROFILE="$choice"
   log_ok "Selected profile: ${SELECTED_PROFILE} (${MONITOR_COUNT} monitor(s))"

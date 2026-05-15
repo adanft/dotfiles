@@ -3,7 +3,7 @@
 stage_packages() {
   log_info "Installing official Arch packages for Hyprland and basic dev tooling."
 
-  local packages=(
+  local base_packages=(
     gum
     hyprland
     xdg-desktop-portal-hyprland
@@ -49,16 +49,26 @@ stage_packages() {
     ttf-nerd-fonts-symbols
   )
 
+  install_pacman_packages "${base_packages[@]}"
+
+  confirm_profile || die "Profile confirmation cancelled."
+
+  local profile_packages=()
+
   if [[ "$SELECTED_PROFILE" == "laptop" || "$SELECTED_PROFILE" == "desktop" ]]; then
     # Laptop/desktop Waybar profiles expose Bluetooth and open blueman-manager.
-    packages+=(bluez blueman)
+    profile_packages+=(bluez blueman)
   fi
 
   if [[ "$SELECTED_PROFILE" == "laptop" ]]; then
-    packages+=(brightnessctl power-profiles-daemon)
+    profile_packages+=(brightnessctl power-profiles-daemon)
   elif [[ "$SELECTED_PROFILE" == "desktop" ]]; then
-    packages+=(power-profiles-daemon)
+    profile_packages+=(power-profiles-daemon)
   fi
 
-  install_pacman_packages "${packages[@]}"
+  if (( ${#profile_packages[@]} > 0 )); then
+    install_pacman_packages "${profile_packages[@]}"
+  else
+    log_info "No extra packages required for profile: $SELECTED_PROFILE"
+  fi
 }

@@ -10,7 +10,5 @@ stage_preflight() {
   [[ -r /etc/arch-release ]] || die "This installer supports Arch Linux only."
   command -v pacman >/dev/null 2>&1 || die "pacman is required."
 
-  ensure_gum
   detect_profile
-  confirm_profile || die "Profile confirmation cancelled."
 }
