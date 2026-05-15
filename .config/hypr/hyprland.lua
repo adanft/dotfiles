@@ -12,28 +12,28 @@ local colors = {
 -- Monitors --
 --------------
 
--- Single monitor: use this when Hyprland should auto-pick the connected display.
--- For a single monitor, do not add workspace-to-monitor rules; Hyprland will
--- place all workspaces on the only connected monitor.
--- hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
+-- Portable default: let Hyprland pick the connected display(s).
+-- This works for desktops, laptops, and VMs without hardcoding output names.
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 
--- Multi-monitor desktop: declare each output explicitly.
+-- Optional: fixed multi-monitor layout.
+-- Get output names with: hyprctl monitors
 -- Format: output, mode, position, scale[, extra options]
-hl.monitor({ output = "DP-3", mode = "1920x1080@60", position = "0x0", scale = "1" })
-hl.monitor({ output = "HDMI-A-1", mode = "2560x1440@120", position = "1920x0", scale = "1" })
-hl.monitor({ output = "DP-1", mode = "2560x1440@75", position = "4480x0", scale = "1", transform = 3 })
+-- hl.monitor({ output = "DP-3", mode = "1920x1080@60", position = "0x0", scale = "1" })
+-- hl.monitor({ output = "HDMI-A-1", mode = "2560x1440@120", position = "1920x0", scale = "1" })
+-- hl.monitor({ output = "DP-1", mode = "2560x1440@75", position = "4480x0", scale = "1", transform = 3 })
 
--- Workspace pinning: only needed when you want fixed workspaces per monitor.
--- For a single monitor, omit these and let Hyprland place workspaces normally.
-hl.workspace_rule({ workspace = "1", monitor = "DP-3" })
-hl.workspace_rule({ workspace = "2", monitor = "DP-3" })
-hl.workspace_rule({ workspace = "3", monitor = "DP-3" })
-hl.workspace_rule({ workspace = "4", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "5", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "6", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "7", monitor = "DP-1" })
-hl.workspace_rule({ workspace = "8", monitor = "DP-1" })
-hl.workspace_rule({ workspace = "9", monitor = "DP-1" })
+-- Optional: workspace pinning for a fixed multi-monitor setup.
+-- Keep disabled for one monitor, laptops with changing outputs, or VMs.
+-- hl.workspace_rule({ workspace = "1", monitor = "DP-3" })
+-- hl.workspace_rule({ workspace = "2", monitor = "DP-3" })
+-- hl.workspace_rule({ workspace = "3", monitor = "DP-3" })
+-- hl.workspace_rule({ workspace = "4", monitor = "HDMI-A-1" })
+-- hl.workspace_rule({ workspace = "5", monitor = "HDMI-A-1" })
+-- hl.workspace_rule({ workspace = "6", monitor = "HDMI-A-1" })
+-- hl.workspace_rule({ workspace = "7", monitor = "DP-1" })
+-- hl.workspace_rule({ workspace = "8", monitor = "DP-1" })
+-- hl.workspace_rule({ workspace = "9", monitor = "DP-1" })
 
 -------------
 -- Aliases --
@@ -158,7 +158,7 @@ hl.bind(main_mod .. " + TAB", hl.dsp.exec_cmd(toggle_layout))
 
 hl.bind(main_mod .. " + E", hl.dsp.exec_cmd(file_manager))
 hl.bind(main_mod .. " + D", hl.dsp.exec_cmd(menu))
-hl.bind(main_mod .. " + X", hl.dsp.exec_cmd("~/.config/rofi/scripts/power-menu.sh"))
+hl.bind(main_mod .. " + X", hl.dsp.exec_cmd("~/.config/rofi/scripts/power-menu-active.sh"))
 hl.bind(main_mod .. " + SHIFT + P", hl.dsp.exec_cmd(picker))
 hl.bind("Print", hl.dsp.exec_cmd(screenshot))
 

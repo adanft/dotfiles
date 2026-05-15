@@ -2,17 +2,17 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Auto-start tmux for interactive terminal shells.
-WM_VAR="/$TMUX"
-WM_CMD="tmux"
+# Ask whether to start tmux in interactive terminal shells.
+if [[ -o interactive ]] && [[ -z "$TMUX" ]] && [[ -t 1 ]] && command -v tmux >/dev/null 2>&1; then
+    printf "Open tmux? [y/N] "
+    read -r answer
 
-function start_if_needed() {
-    if [[ $- == *i* ]] && [[ -z "${WM_VAR#/}" ]] && [[ -t 1 ]]; then
-        exec $WM_CMD
-    fi
-}
-
-start_if_needed
+    case "$answer" in
+        y|Y|yes|YES)
+            exec tmux
+            ;;
+    esac
+fi
 
 # Disable vi mode [-e], to enable [-v], default always works Emacs mode
 bindkey -v
