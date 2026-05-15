@@ -10,7 +10,6 @@
   "modules-right": [
     "tray",
     "network#lan",
-    "network#wifi",
     "wireplumber",
     "wireplumber#source",
     "custom/notification",
@@ -87,17 +86,6 @@
     "tooltip-format": "{ifname}  {ipaddr}",
     "tooltip": true,
     "interval": 5
-  },
-  "network#wifi": {
-    "tooltip-format": "{essid}  {frequency}",
-    "tooltip-format-disconnected": "󰤮  {frequency}",
-    "format": "󰤨  {signalStrength}%",
-    "format-wifi": "󰤨  {signalStrength}%",
-    "format-disconnected": "󰤭",
-    "on-click": "alacritty --class floating -e nmtui",
-    "tooltip": true,
-    "interval": 5,
-    "tooltip-format-connected": "{essid} 󰤨  {signalStrength}%  {frequency}"
   },
   "wireplumber": {
     "format": "{icon}  {volume}%",

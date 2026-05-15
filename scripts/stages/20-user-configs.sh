@@ -70,7 +70,6 @@ copy_hypr_config() {
     "hyprland.lua" \
     "hyprlock.conf" \
     "hyprpaper.conf" \
-    "profiles" \
     "scripts" \
     "theme.conf"
 
@@ -79,7 +78,6 @@ copy_hypr_config() {
 
 copy_waybar_config() {
   copy_config_children "$REPO_ROOT/.config/waybar" "$HOME/.config/waybar" \
-    "profiles" \
     "style.css" \
     "theme.css"
 
