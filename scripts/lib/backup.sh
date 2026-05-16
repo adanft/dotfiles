@@ -3,8 +3,14 @@
 backup_path() {
   local target="$1"
   local timestamp
+  local relative
   timestamp="$(date +%Y%m%d-%H%M%S)"
-  printf '%s.backup.%s\n' "$target" "$timestamp"
+
+  relative="${target#$HOME/}"
+  relative="${relative#/}"
+
+  printf '%s/.local/state/dotfiles-installer/backups/%s/%s\n' \
+    "$HOME" "$timestamp" "$relative"
 }
 
 backup_existing_target() {
@@ -15,5 +21,6 @@ backup_existing_target() {
   local backup
   backup="$(backup_path "$target")"
   log_warn "Backing up existing target: $target -> $backup"
+  run_cmd mkdir -p "$(dirname "$backup")"
   run_cmd mv "$target" "$backup"
 }
