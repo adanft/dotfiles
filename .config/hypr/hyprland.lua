@@ -35,6 +35,12 @@ hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 -- hl.workspace_rule({ workspace = "8", monitor = "DP-1" })
 -- hl.workspace_rule({ workspace = "9", monitor = "DP-1" })
 
+-- Keep workspaces 1-9 available on every profile without pinning them to a
+-- physical monitor. Waybar also declares these as persistent workspaces.
+for workspace = 1, 9 do
+  hl.workspace_rule({ workspace = tostring(workspace) })
+end
+
 -------------
 -- Aliases --
 -------------

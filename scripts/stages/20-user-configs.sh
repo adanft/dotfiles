@@ -97,6 +97,22 @@ copy_rofi_config() {
   apply_rofi_power_menu_profile
 }
 
+apply_rofi_power_menu_theme() {
+  local default_theme="$REPO_ROOT/.config/rofi/themes/power-menu.rasi"
+  local vm_theme="$REPO_ROOT/.config/rofi/themes/power-menu-vm.rasi"
+  local home_theme="$HOME/.config/rofi/themes/power-menu.rasi"
+  local selected_theme="$default_theme"
+
+  if [[ "$SELECTED_PROFILE" == "vm" ]]; then
+    selected_theme="$vm_theme"
+    [[ -f "$vm_theme" ]] || die "Missing VM Rofi power menu theme: $vm_theme"
+  else
+    [[ -f "$default_theme" ]] || die "Missing default Rofi power menu theme: $default_theme"
+  fi
+
+  copy_active_profile_file "Rofi power menu theme" "$selected_theme" "$home_theme"
+}
+
 copy_active_profile_file() {
   local label="$1"
   local source="$2"
@@ -133,6 +149,7 @@ apply_rofi_power_menu_profile() {
   fi
 
   copy_active_profile_file "Rofi power menu" "$selected_script" "$home_active_script"
+  apply_rofi_power_menu_theme
 }
 
 apply_hypridle_profile() {
