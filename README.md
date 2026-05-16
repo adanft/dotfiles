@@ -2,25 +2,56 @@
 
 A clean, practical Arch Linux desktop built around **Hyprland**, **Waybar**, **Rofi**, **Zsh**, **Tmux**, and modern terminal tooling. The goal is not to install every possible tool: it installs a focused working environment with enough pieces to start coding, navigating, launching apps, taking screenshots, managing sessions, and using a polished Wayland desktop immediately.
 
-These dotfiles are designed to be copied into the target system, not symlinked to this repository. After installation, the machine keeps working even if the repository is deleted.
+## Quick start
+
+1. Clone this repository on an Arch Linux system.
+2. Preview the install first:
+
+   ```sh
+   ./install.sh --dry-run --profile laptop
+   ```
+
+3. Run the real install with the profile that matches your machine:
+
+   ```sh
+   ./install.sh --profile laptop
+   ./install.sh --profile desktop
+   ./install.sh --profile vm
+   ```
+
+4. Reboot or log out/in after the installer finishes.
+5. Open tmux and install plugins with `Ctrl-a + I` if you use tmux.
+
+Use `laptop` for battery/backlight support, `desktop` for a full workstation, and `vm` for a minimal virtual machine setup.
+
+## Before you install
+
+- This installer is for **Arch Linux only**.
+- Run it as your regular user, not with `sudo ./install.sh`.
+- The installer will ask before enabling services such as Greetd and NetworkManager.
+- Existing files that differ from the repo version are backed up next to themselves before being replaced.
+- Unknown files in existing config directories are left untouched.
+- Skip the bootloader section if you do not know which bootloader you use yet.
 
 ## Screenshots
 
-Add these images to the repository when they are ready:
+![Desktop preview](docs/images/desktop.png)
 
-| Image | Suggested file name | Purpose |
-| --- | --- | --- |
-| Full desktop | `docs/images/desktop.png` | Main screenshot for the final desktop look. |
-| Waybar close-up | `docs/images/waybar.png` | Shows modules, spacing, icons, and profile layout. |
-| Rofi launcher | `docs/images/rofi-launcher.png` | Shows the app launcher theme. |
-| Rofi power menu | `docs/images/rofi-power-menu.png` | Shows shutdown/reboot/lock/suspend menu. |
-| Terminal/Tmux | `docs/images/terminal-tmux.png` | Shows shell, prompt, tmux status, and terminal theme. |
+| Waybar | Rofi launcher |
+| --- | --- |
+| ![Waybar preview](docs/images/waybar.png) | ![Rofi launcher preview](docs/images/rofi-launcher.png) |
 
-Create the directory with:
+| Rofi power menu | Terminal |
+| --- | --- |
+| ![Rofi power menu preview](docs/images/rofi-power-menu.png) | ![Terminal preview](docs/images/terminal.png) |
 
-```sh
-mkdir -p docs/images
-```
+| Hyprlock | Tuigreet |
+| --- | --- |
+| ![Hyprlock preview](docs/images/hyprlock.png) | ![Tuigreet preview](docs/images/tuigreet.png) |
+
+| Tmux | Plymouth |
+| --- | --- |
+| ![Tmux preview](docs/images/terminal-tmux.png) | ![Plymouth preview](docs/images/plymouth.png) |
 
 ## What this setup includes
 
@@ -42,7 +73,6 @@ mkdir -p docs/images
 - **Minimal but complete**: it avoids random extras while still providing a working daily desktop.
 - **Profile-aware**: laptops, desktops, and VMs get different power, Waybar, and service behavior.
 - **Safe install model**: existing files are backed up before replacement; unknown files are not deleted.
-- **Portable runtime**: configs are copied into `$HOME` and `/etc`, not symlinked to the repo.
 - **Reviewable structure**: the installer is split into small stages under `scripts/stages/` and shared helpers under `scripts/lib/`.
 
 ## Requirements
@@ -52,6 +82,12 @@ mkdir -p docs/images
 - Internet access for package installation and first Zsh plugin bootstrap.
 - A Nerd Font capable of rendering icons.
 - `SF Pro Display` installed manually if you want the intended visual match.
+- Visual themes/icons installed manually if you want the exact look:
+  - `Sweet-Rainbow`
+  - `Sweet-Ambar-Blue-Dark-v40`
+  - `candy-icons`
+  - `Qogir`
+  - `Qogir` cursor theme
 
 SF Pro Display is not vendored here. Install it separately from:
 
@@ -90,7 +126,7 @@ The installer must be run as your regular user, not as root. Privileged actions 
 | --- | --- |
 | Destination directory already exists | Reuse it. |
 | Destination directory does not exist | Create it with `mkdir -p`. |
-| A file/symlink blocks a required directory path | Stop with a clear error. |
+| A file blocks a required directory path | Stop with a clear error. |
 | Destination file already matches the repo file | Do nothing. |
 | Destination file differs | Move the existing file to a backup next to itself, then copy the repo file. |
 | Unknown files in existing directories | Leave them untouched. |
@@ -178,6 +214,8 @@ Profile-specific files are copied into normal runtime paths:
 
 The installer also handles:
 
+Greetd is the login manager, Tuigreet is the text-based login screen, and Plymouth is the boot splash shown while the system starts.
+
 | Source | Destination |
 | --- | --- |
 | `greetd/config.toml` | `/etc/greetd/config.toml` |
@@ -203,6 +241,8 @@ sudo mkinitcpio -P
 ```
 
 ## Bootloader notes for TTY colors and Plymouth
+
+This section is optional. Skip it if you do not know which bootloader you use.
 
 The repo includes a TTY color palette as kernel parameters. Add the parameters to your bootloader command line if you want the same TTY colors.
 
@@ -239,6 +279,8 @@ Edit your Limine entry and append the values to the kernel command line, usually
 ```text
 CMDLINE=root=... rw quiet splash vt.default_red=... vt.default_grn=... vt.default_blu=...
 ```
+
+> Note: on some Limine setups, kernel updates or boot-entry regeneration can overwrite manual TTY color changes. I have not fully investigated the exact cause yet. If the colors disappear after an update, reapply the parameters above for now.
 
 For Plymouth, make sure your initramfs uses the `plymouth` hook. On Arch with `mkinitcpio`, that means adding `plymouth` to `HOOKS` in `/etc/mkinitcpio.conf`, then running:
 
