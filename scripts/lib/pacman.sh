@@ -24,12 +24,3 @@ install_pacman_packages() {
 
   run_root pacman -S --needed --noconfirm "${missing[@]}"
 }
-
-ensure_gum() {
-  if command -v gum >/dev/null 2>&1; then
-    return 0
-  fi
-
-  log_warn "gum is missing; installing it first for installer UX."
-  install_pacman_packages gum
-}

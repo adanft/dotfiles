@@ -4,7 +4,6 @@ stage_packages() {
   log_info "Installing official Arch packages for Hyprland and basic dev tooling."
 
   local base_packages=(
-    gum
     hyprland
     xdg-desktop-portal-hyprland
     waybar
