@@ -2,14 +2,66 @@
 
 Personal Linux desktop dotfiles focused on Hyprland, Waybar, Zsh, Tmux and terminal tooling.
 
+## Install
+
+This repository includes an Arch Linux installer:
+
+```sh
+./install.sh
+```
+
+Preview the actions first with:
+
+```sh
+./install.sh --dry-run
+```
+
+The installer copies repo-owned files into `$HOME` and system config locations. It does **not** symlink configs to this repository, so the installed machine keeps working if the repo is deleted later.
+
+### Profiles
+
+During installation, choose one profile:
+
+| Profile | Intended machine | Includes |
+| ------- | ---------------- | -------- |
+| `laptop` | Laptop Hyprland setup | Wi-Fi, LAN, Bluetooth, audio, microphone, battery, backlight, power profiles, suspend |
+| `desktop` | Desktop Hyprland setup | Wi-Fi, LAN, Bluetooth, audio, microphone, tray, notifications, power profiles, suspend |
+| `vm` | Virtual machine setup | Minimal Waybar, LAN only, no Bluetooth, no battery/backlight, no power profiles, no suspend |
+
+Profile-specific files are copied into the normal runtime paths. For example, the VM power menu source has no suspend option, but it still installs as:
+
+```sh
+~/.config/rofi/scripts/power-menu.sh
+```
+
+### Safety model
+
+- Existing directories are reused or created with `mkdir -p`.
+- If a directory path is blocked by a file or symlink, the installer fails instead of replacing it.
+- If a destination file already matches the repo file, nothing happens.
+- If a destination file differs, the existing file is backed up next to itself before copying the repo version.
+- The installer does not delete unknown existing files or directories.
+
+Backup example:
+
+```text
+~/.config/rofi/scripts/power-menu.sh
+~/.config/rofi/scripts/power-menu.backup.20260515-234249.sh
+```
+
 ## Preview
 ![Preview result](https://github.com/adanft/dotfiles/blob/main/waybar.png)
 ![Preview result](https://github.com/adanft/dotfiles/blob/main/preview.png)
 
 ## Requirements
+- Arch Linux
+
 ### Fonts
 - SF Pro Display
 - Symbols Nerd Font
+
+SF Pro Display is not vendored in this repository. Install it separately from [apple-san-francisco-pro-fonts](https://github.com/chris-short/apple-san-francisco-pro-fonts).
+
 ### Others
 - powerprofilesctl
 - nmtui
@@ -17,16 +69,18 @@ Personal Linux desktop dotfiles focused on Hyprland, Waybar, Zsh, Tmux and termi
 - pactl
 - alacritty
 
-## Tmux setup
-- Install `tmux`, `git`, and `wl-clipboard`
-- Copy `.tmux.conf` to `$HOME/.tmux.conf`
-- Copy `.tmux/` to `$HOME/.tmux/`
-- Install TPM:
+## Tmux plugins
+
+The installer installs tmux and copies the tracked tmux configuration. After the install, set up TPM on the target machine and install the plugins:
+
+1. Install TPM if it is not already present:
+
   ```sh
   mkdir -p ~/.tmux/plugins
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   ```
-- Open tmux and install the configured plugins with `prefix + I`
+
+2. Open tmux and install the configured plugins with `prefix + I`.
 
 Only the tmux configuration and helper scripts are tracked here. Do not copy plugin directories into the repository; TPM installs them on each machine.
 
@@ -45,7 +99,7 @@ Only the tmux configuration and helper scripts are tracked here. Do not copy plu
 - Destructive actions ask for confirmation before killing panes, windows, or sessions
 - Sessions are preserved when the client terminal detaches or closes
 
-### Tmux plugins
+### Configured tmux plugins
 - `tmux-plugins/tpm`
 - `tmux-plugins/tmux-resurrect`
 - `tmux-plugins/tmux-continuum`
@@ -55,15 +109,15 @@ Only the tmux configuration and helper scripts are tracked here. Do not copy plu
 
 The plugin repositories are not part of these dotfiles. TPM/plugin installation is done on the target machine.
 
-## Zsh setup
-- Install `zsh`, `git`, `tmux`, `fzf`, `zoxide`, `lsd`, `bat`, `fastfetch`, and `neovim`
-- Change your default shell with `chsh -s $(which zsh)` and relog if needed
-- Copy `.zshrc` and `.colors.sh` to `$HOME/`
-- Make sure the `en_US.UTF-8` locale is generated on your system
-- Use a Nerd Font in your terminal
-- Copy `.config/starship/starship.toml` to `$HOME/.config/starship/starship.toml`
+## Zsh
 
-The first Zsh startup also needs internet access because `.zshrc` bootstraps Zinit automatically and downloads the configured plugins and Starship prompt.
+The installer installs Zsh tooling, copies the tracked shell config, and attempts to set Zsh as the default shell when possible.
+
+The first Zsh startup needs internet access because `.zshrc` bootstraps Zinit automatically and downloads the configured plugins and Starship prompt.
+
+## Neovim
+
+The installer only installs the `neovim` binary. It does not copy or manage a Neovim config from this repository.
 
 ## TTY default colors via GRUB kernel parameters
 

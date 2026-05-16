@@ -10,6 +10,4 @@ stage_preflight() {
   [[ -r /etc/arch-release ]] || die "This installer supports Arch Linux only."
   command -v pacman >/dev/null 2>&1 || die "pacman is required."
   command -v sudo >/dev/null 2>&1 || die "sudo is required because this installer must run as your user and uses sudo for privileged steps."
-
-  detect_profile
 }

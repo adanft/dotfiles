@@ -2,15 +2,30 @@
 
 backup_path() {
   local target="$1"
-  local timestamp
-  local relative
-  timestamp="$(date +%Y%m%d-%H%M%S)"
+  local dir base name ext timestamp backup candidate counter
 
-  relative="${target#$HOME/}"
-  relative="${relative#/}"
+  timestamp="$(date +%Y%m%d-%H%M%S-%N)"
+  dir="$(dirname "$target")"
+  base="$(basename "$target")"
 
-  printf '%s/.local/state/dotfiles-installer/backups/%s/%s\n' \
-    "$HOME" "$timestamp" "$relative"
+  if [[ "$base" == *.* && "$base" != .* ]]; then
+    name="${base%.*}"
+    ext=".${base##*.}"
+  else
+    name="$base"
+    ext=""
+  fi
+
+  backup="$dir/$name.backup.$timestamp$ext"
+  candidate="$backup"
+  counter=1
+
+  while [[ -e "$candidate" || -L "$candidate" ]]; do
+    candidate="$dir/$name.backup.$timestamp.$counter$ext"
+    counter=$((counter + 1))
+  done
+
+  printf '%s\n' "$candidate"
 }
 
 backup_existing_target() {

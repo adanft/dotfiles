@@ -2,18 +2,6 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Ask whether to start tmux in interactive terminal shells.
-if [[ -o interactive ]] && [[ -z "$TMUX" ]] && [[ -t 1 ]] && command -v tmux >/dev/null 2>&1; then
-    printf "Open tmux? [y/N] "
-    read -r answer
-
-    case "$answer" in
-        y|Y|yes|YES)
-            exec tmux
-            ;;
-    esac
-fi
-
 # Disable vi mode [-e], to enable [-v], default always works Emacs mode
 bindkey -v
 

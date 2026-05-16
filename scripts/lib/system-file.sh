@@ -11,9 +11,30 @@ file_mode() {
 
 system_file_backup_path() {
   local target="$1"
-  local timestamp
-  timestamp="$(date +%Y%m%d-%H%M%S)"
-  printf '%s.backup.%s\n' "$target" "$timestamp"
+  local dir base name ext timestamp backup candidate counter
+
+  timestamp="$(date +%Y%m%d-%H%M%S-%N)"
+  dir="$(dirname "$target")"
+  base="$(basename "$target")"
+
+  if [[ "$base" == *.* && "$base" != .* ]]; then
+    name="${base%.*}"
+    ext=".${base##*.}"
+  else
+    name="$base"
+    ext=""
+  fi
+
+  backup="$dir/$name.backup.$timestamp$ext"
+  candidate="$backup"
+  counter=1
+
+  while [[ -e "$candidate" || -L "$candidate" ]]; do
+    candidate="$dir/$name.backup.$timestamp.$counter$ext"
+    counter=$((counter + 1))
+  done
+
+  printf '%s\n' "$candidate"
 }
 
 install_system_file() {

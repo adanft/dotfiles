@@ -20,16 +20,14 @@ gum_confirm_or_prompt() {
   [[ "$answer" =~ ^[Yy]$|^[Yy][Ee][Ss]$ ]]
 }
 
-gum_choose_or_default() {
+gum_choose() {
   local prompt="$1"
-  local default="$2"
-  shift 2
+  shift
   local choices=("$@")
 
   if ! interactive_terminal; then
-    log_warn "No interactive terminal available; using detected default: $default"
-    printf '%s\n' "$default"
-    return 0
+    log_warn "No interactive terminal available; cannot select a profile."
+    return 1
   fi
 
   printf '%s\n' "$prompt" >&2
@@ -39,13 +37,8 @@ gum_choose_or_default() {
     printf '  %d) %s\n' "$((index + 1))" "${choices[$index]}" >&2
   done
 
-  printf 'Choose profile [%s]: ' "$default" >&2
+  printf 'Choose profile: ' >&2
   read -r answer
-
-  [[ -z "$answer" ]] && {
-    printf '%s\n' "$default"
-    return 0
-  }
 
   if [[ "$answer" =~ ^[0-9]+$ ]] && (( answer >= 1 && answer <= ${#choices[@]} )); then
     printf '%s\n' "${choices[$((answer - 1))]}"

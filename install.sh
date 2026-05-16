@@ -4,8 +4,6 @@ set -Eeuo pipefail
 REPO_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DRY_RUN=0
 SELECTED_PROFILE=""
-DETECTED_PROFILE=""
-MONITOR_COUNT="0"
 
 usage() {
   cat <<'EOF'
@@ -36,8 +34,8 @@ source "$REPO_ROOT/scripts/lib/log.sh"
 source "$REPO_ROOT/scripts/lib/run.sh"
 # shellcheck source=scripts/lib/prompt.sh
 source "$REPO_ROOT/scripts/lib/prompt.sh"
-# shellcheck source=scripts/lib/detect.sh
-source "$REPO_ROOT/scripts/lib/detect.sh"
+# shellcheck source=scripts/lib/profile.sh
+source "$REPO_ROOT/scripts/lib/profile.sh"
 # shellcheck source=scripts/lib/backup.sh
 source "$REPO_ROOT/scripts/lib/backup.sh"
 # shellcheck source=scripts/lib/link.sh

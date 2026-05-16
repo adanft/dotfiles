@@ -51,7 +51,7 @@ stage_packages() {
 
   install_pacman_packages "${base_packages[@]}"
 
-  confirm_profile || die "Profile confirmation cancelled."
+  select_profile || die "Profile selection cancelled."
 
   local profile_packages=()
 
