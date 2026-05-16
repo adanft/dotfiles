@@ -87,7 +87,10 @@ copy_waybar_config() {
 copy_rofi_config() {
   ensure_real_dir "$HOME/.config/rofi"
   copy_config "$REPO_ROOT/.config/rofi/shared" "$HOME/.config/rofi/shared"
-  copy_config "$REPO_ROOT/.config/rofi/themes" "$HOME/.config/rofi/themes"
+
+  copy_config_children "$REPO_ROOT/.config/rofi/themes" "$HOME/.config/rofi/themes" \
+    "launcher.rasi" \
+    "screenshot.rasi"
 
   copy_config_children "$REPO_ROOT/.config/rofi/scripts" "$HOME/.config/rofi/scripts" \
     "power-menu.sh" \
@@ -111,6 +114,16 @@ apply_rofi_power_menu_theme() {
   fi
 
   copy_active_profile_file "Rofi power menu theme" "$selected_theme" "$home_theme"
+  remove_obsolete_config "$HOME/.config/rofi/themes/power-menu-vm.rasi"
+}
+
+remove_obsolete_config() {
+  local target="$1"
+
+  [[ -e "$target" || -L "$target" ]] || return 0
+
+  log_info "Removing obsolete installed config: $target"
+  backup_existing_target "$target"
 }
 
 copy_active_profile_file() {
