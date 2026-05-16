@@ -92,6 +92,7 @@
     "interval": 5
   },
   "network#wifi": {
+    "interface": "wlan0",
     "tooltip-format": "{essid}  {frequency}",
     "tooltip-format-disconnected": "󰤮  {frequency}",
     "format": "󰤨  {signalStrength}%",

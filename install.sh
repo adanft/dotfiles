@@ -7,12 +7,13 @@ SELECTED_PROFILE=""
 
 usage() {
   cat <<'EOF'
-Usage: ./install.sh [--dry-run] [--help]
+Usage: ./install.sh [--dry-run] [--profile laptop|desktop|vm] [--help]
 
 Install this repo's Arch Linux Hyprland dotfiles with safe, idempotent steps.
 
 Options:
   --dry-run   Print mutations without changing packages, services, or files.
+  --profile   Select the installer profile non-interactively.
   --help      Show this help message.
 EOF
 }
@@ -21,6 +22,16 @@ parse_args() {
   while (($#)); do
     case "$1" in
       --dry-run) DRY_RUN=1 ;;
+      --profile)
+        shift
+        [[ $# -gt 0 ]] || die "--profile requires one of: laptop, desktop, vm"
+        SELECTED_PROFILE="$1"
+        valid_profile "$SELECTED_PROFILE" || die "Invalid profile: $SELECTED_PROFILE. Use one of: laptop, desktop, vm"
+        ;;
+      --profile=*)
+        SELECTED_PROFILE="${1#--profile=}"
+        valid_profile "$SELECTED_PROFILE" || die "Invalid profile: $SELECTED_PROFILE. Use one of: laptop, desktop, vm"
+        ;;
       --help|-h) usage; exit 0 ;;
       *) die "Unknown argument: $1" ;;
     esac

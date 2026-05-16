@@ -2,6 +2,10 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+typeset -U path PATH
+path=("$HOME/.local/bin" $path)
+export PATH
+
 # Disable vi mode [-e], to enable [-v], default always works Emacs mode
 bindkey -v
 

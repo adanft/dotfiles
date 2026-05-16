@@ -3,11 +3,11 @@
 # Small logging helpers shared by installer stages.
 
 log_info() {
-  printf '\033[1;34m[info]\033[0m %s\n' "$*"
+  printf '\033[1;34m[info]\033[0m %s\n' "$*" >&2
 }
 
 log_ok() {
-  printf '\033[1;32m[ ok ]\033[0m %s\n' "$*"
+  printf '\033[1;32m[ ok ]\033[0m %s\n' "$*" >&2
 }
 
 log_warn() {

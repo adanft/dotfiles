@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 stage_packages() {
+  select_profile || die "Profile selection cancelled."
+
   log_info "Installing official Arch packages for Hyprland and basic dev tooling."
 
   local base_packages=(
@@ -23,9 +25,7 @@ stage_packages() {
     hyprlock
     hyprpicker
     swaync
-    pipewire
     wireplumber
-    playerctl
     polkit-gnome
     greetd
     greetd-tuigreet
@@ -37,7 +37,6 @@ stage_packages() {
     jq
     libnotify
     which
-    fontconfig
     xdg-user-dirs
     networkmanager
     git
@@ -51,13 +50,11 @@ stage_packages() {
 
   install_pacman_packages "${base_packages[@]}"
 
-  select_profile || die "Profile selection cancelled."
-
   local profile_packages=()
 
   if [[ "$SELECTED_PROFILE" == "laptop" || "$SELECTED_PROFILE" == "desktop" ]]; then
     # Laptop/desktop Waybar profiles expose Bluetooth and open blueman-manager.
-    profile_packages+=(bluez blueman)
+    profile_packages+=(blueman)
   fi
 
   if [[ "$SELECTED_PROFILE" == "laptop" ]]; then
