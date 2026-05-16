@@ -18,6 +18,11 @@ backup_existing_target() {
 
   [[ -e "$target" || -L "$target" ]] || return 0
 
+  if [[ -d "$target" && ! -L "$target" ]]; then
+    log_warn "Refusing to backup directory automatically: $target"
+    return 1
+  fi
+
   local backup
   backup="$(backup_path "$target")"
   log_warn "Backing up existing target: $target -> $backup"

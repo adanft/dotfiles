@@ -34,13 +34,15 @@ stage_user_configs() {
 ensure_real_dir() {
   local target="$1"
 
-  if [[ -d "$target" && ! -L "$target" ]]; then
+  if [[ -d "$target" ]]; then
     log_ok "Directory already exists: $target"
     return 0
   fi
 
-  run_cmd mkdir -p "$(dirname "$target")"
-  backup_existing_target "$target"
+  if [[ -e "$target" || -L "$target" ]]; then
+    die "Cannot create directory because a non-directory already exists: $target"
+  fi
+
   run_cmd mkdir -p "$target"
 
   if [[ "$DRY_RUN" == "1" ]]; then
@@ -73,8 +75,6 @@ copy_hypr_config() {
     "theme.conf"
 
   apply_hypridle_profile
-  remove_obsolete_config "$HOME/.config/hypr/active"
-  remove_obsolete_config "$HOME/.config/hypr/profiles"
 }
 
 copy_waybar_config() {
@@ -83,7 +83,6 @@ copy_waybar_config() {
     "theme.css"
 
   apply_waybar_profile
-  remove_obsolete_config "$HOME/.config/waybar/profiles"
 }
 
 copy_rofi_config() {
@@ -98,8 +97,6 @@ copy_rofi_config() {
     "screenshot.sh"
 
   apply_rofi_power_menu_profile
-  remove_obsolete_config "$HOME/.config/rofi/scripts/power-menu.sh"
-  remove_obsolete_config "$HOME/.config/rofi/scripts/power-menu-vm.sh"
 }
 
 apply_rofi_power_menu_theme() {
@@ -114,7 +111,6 @@ apply_rofi_power_menu_theme() {
   [[ -f "$source_theme" ]] || die "Missing Rofi power menu theme: $source_theme"
 
   copy_rofi_power_menu_theme_with_columns "$source_theme" "$home_theme" "$columns"
-  remove_obsolete_config "$HOME/.config/rofi/themes/power-menu-vm.rasi"
 }
 
 copy_rofi_power_menu_theme_with_columns() {
@@ -151,15 +147,6 @@ copy_rofi_power_menu_theme_with_columns() {
   log_ok "Copied Rofi power menu theme locally with columns: $columns"
 }
 
-remove_obsolete_config() {
-  local target="$1"
-
-  [[ -e "$target" || -L "$target" ]] || return 0
-
-  log_info "Removing obsolete installed config: $target"
-  backup_existing_target "$target"
-}
-
 copy_active_profile_file() {
   local label="$1"
   local source="$2"
@@ -185,7 +172,7 @@ copy_active_profile_file() {
 apply_rofi_power_menu_profile() {
   local default_script="$REPO_ROOT/.config/rofi/scripts/power-menu.sh"
   local vm_script="$REPO_ROOT/.config/rofi/scripts/power-menu-vm.sh"
-  local home_active_script="$HOME/.config/rofi/scripts/power-menu-active.sh"
+  local home_script="$HOME/.config/rofi/scripts/power-menu.sh"
   local selected_script="$default_script"
 
   if [[ "$SELECTED_PROFILE" == "vm" ]]; then
@@ -195,7 +182,7 @@ apply_rofi_power_menu_profile() {
     [[ -f "$default_script" ]] || die "Missing default Rofi power menu script: $default_script"
   fi
 
-  copy_active_profile_file "Rofi power menu" "$selected_script" "$home_active_script"
+  copy_active_profile_file "Rofi power menu" "$selected_script" "$home_script"
   apply_rofi_power_menu_theme
 }
 

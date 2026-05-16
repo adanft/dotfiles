@@ -6,11 +6,6 @@ config_target_current() {
 
   [[ -e "$target" && ! -L "$target" ]] || return 1
 
-  if [[ -d "$source" && -d "$target" ]]; then
-    diff -qr "$source" "$target" >/dev/null 2>&1
-    return $?
-  fi
-
   if [[ -f "$source" && -f "$target" ]]; then
     cmp -s "$source" "$target"
     return $?
@@ -28,6 +23,11 @@ copy_config() {
     return 0
   }
 
+  if [[ -d "$source" && ! -L "$source" ]]; then
+    copy_config_dir "$source" "$target"
+    return 0
+  fi
+
   if config_target_current "$source" "$target"; then
     log_ok "Config already current: $target"
     return 0
@@ -42,4 +42,23 @@ copy_config() {
   else
     log_ok "Copied: $source -> $target"
   fi
+}
+
+copy_config_dir() {
+  local source_dir="$1"
+  local target_dir="$2"
+  local child child_name
+
+  if [[ -e "$target_dir" && ! -d "$target_dir" ]]; then
+    die "Cannot create directory because a non-directory already exists: $target_dir"
+  fi
+
+  run_cmd mkdir -p "$target_dir"
+
+  shopt -s dotglob nullglob
+  for child in "$source_dir"/*; do
+    child_name="$(basename "$child")"
+    copy_config "$child" "$target_dir/$child_name"
+  done
+  shopt -u dotglob nullglob
 }

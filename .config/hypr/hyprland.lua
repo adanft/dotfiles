@@ -164,7 +164,7 @@ hl.bind(main_mod .. " + TAB", hl.dsp.exec_cmd(toggle_layout))
 
 hl.bind(main_mod .. " + E", hl.dsp.exec_cmd(file_manager))
 hl.bind(main_mod .. " + D", hl.dsp.exec_cmd(menu))
-hl.bind(main_mod .. " + X", hl.dsp.exec_cmd("~/.config/rofi/scripts/power-menu-active.sh"))
+hl.bind(main_mod .. " + X", hl.dsp.exec_cmd("~/.config/rofi/scripts/power-menu.sh"))
 hl.bind(main_mod .. " + SHIFT + P", hl.dsp.exec_cmd(picker))
 hl.bind("Print", hl.dsp.exec_cmd(screenshot))
 
