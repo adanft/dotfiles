@@ -1,4 +1,4 @@
-# Adan's Hyprland Dotfiles
+# adanft dotfiles
 
 A clean, practical Arch Linux desktop built around **Hyprland**, **Waybar**, **Rofi**, **Zsh**, **Tmux**, and modern terminal tooling. The goal is not to install every possible tool: it installs a focused working environment with enough pieces to start coding, navigating, launching apps, taking screenshots, managing sessions, and using a polished Wayland desktop immediately.
 
@@ -373,17 +373,3 @@ Use your own Neovim configuration if you want one. This keeps the desktop instal
 4. If using Plymouth, confirm the `plymouth` hook exists in `/etc/mkinitcpio.conf` and run `sudo mkinitcpio -P` when ready.
 5. Add bootloader kernel parameters if you want the TTY color palette.
 6. Add screenshots under `docs/images/` using the suggested names above.
-
-## Repository layout
-
-| Path | Purpose |
-| --- | --- |
-| `install.sh` | Installer entrypoint. |
-| `scripts/lib/` | Shared installer helpers. |
-| `scripts/stages/` | Ordered installer stages. |
-| `.config/hypr/` | Hyprland, Hyprlock, Hyprpaper, Hypridle profile sources. |
-| `.config/waybar/` | Shared Waybar style/theme and profile configs. |
-| `.config/rofi/` | Rofi launcher, screenshot, power menu, shared theme pieces. |
-| `.tmux/` and `.tmux.conf` | Tmux configuration. |
-| `greetd/` | Greetd system config sources. |
-| `plymouth/` | Plymouth custom theme sources. |
