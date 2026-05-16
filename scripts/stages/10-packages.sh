@@ -37,6 +37,7 @@ stage_packages() {
     jq
     libnotify
     which
+    fontconfig
     xdg-user-dirs
     networkmanager
     git

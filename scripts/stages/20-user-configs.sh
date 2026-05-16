@@ -66,7 +66,6 @@ copy_config_children() {
 copy_hypr_config() {
   copy_config_children "$REPO_ROOT/.config/hypr" "$HOME/.config/hypr" \
     ".luarc.json" \
-    "active" \
     "hyprland.lua" \
     "hyprlock.conf" \
     "hyprpaper.conf" \
@@ -74,6 +73,8 @@ copy_hypr_config() {
     "theme.conf"
 
   apply_hypridle_profile
+  remove_obsolete_config "$HOME/.config/hypr/active"
+  remove_obsolete_config "$HOME/.config/hypr/profiles"
 }
 
 copy_waybar_config() {
@@ -82,6 +83,7 @@ copy_waybar_config() {
     "theme.css"
 
   apply_waybar_profile
+  remove_obsolete_config "$HOME/.config/waybar/profiles"
 }
 
 copy_rofi_config() {
@@ -93,28 +95,60 @@ copy_rofi_config() {
     "screenshot.rasi"
 
   copy_config_children "$REPO_ROOT/.config/rofi/scripts" "$HOME/.config/rofi/scripts" \
-    "power-menu.sh" \
-    "power-menu-vm.sh" \
     "screenshot.sh"
 
   apply_rofi_power_menu_profile
+  remove_obsolete_config "$HOME/.config/rofi/scripts/power-menu.sh"
+  remove_obsolete_config "$HOME/.config/rofi/scripts/power-menu-vm.sh"
 }
 
 apply_rofi_power_menu_theme() {
-  local default_theme="$REPO_ROOT/.config/rofi/themes/power-menu.rasi"
-  local vm_theme="$REPO_ROOT/.config/rofi/themes/power-menu-vm.rasi"
+  local source_theme="$REPO_ROOT/.config/rofi/themes/power-menu.rasi"
   local home_theme="$HOME/.config/rofi/themes/power-menu.rasi"
-  local selected_theme="$default_theme"
+  local columns="5"
 
   if [[ "$SELECTED_PROFILE" == "vm" ]]; then
-    selected_theme="$vm_theme"
-    [[ -f "$vm_theme" ]] || die "Missing VM Rofi power menu theme: $vm_theme"
-  else
-    [[ -f "$default_theme" ]] || die "Missing default Rofi power menu theme: $default_theme"
+    columns="4"
   fi
 
-  copy_active_profile_file "Rofi power menu theme" "$selected_theme" "$home_theme"
+  [[ -f "$source_theme" ]] || die "Missing Rofi power menu theme: $source_theme"
+
+  copy_rofi_power_menu_theme_with_columns "$source_theme" "$home_theme" "$columns"
   remove_obsolete_config "$HOME/.config/rofi/themes/power-menu-vm.rasi"
+}
+
+copy_rofi_power_menu_theme_with_columns() {
+  local source="$1"
+  local target="$2"
+  local columns="$3"
+  local tmp
+
+  if [[ "$DRY_RUN" == "1" ]]; then
+    log_info "dry-run: would copy $source -> $target with columns: $columns"
+    return 0
+  fi
+
+  tmp="$(mktemp)"
+  while IFS= read -r line; do
+    if [[ "$line" == *"columns:"* ]]; then
+      printf '    columns:                     %s;\n' "$columns"
+    else
+      printf '%s\n' "$line"
+    fi
+  done < "$source" > "$tmp"
+
+  if [[ -f "$target" ]] && cmp -s "$tmp" "$target"; then
+    rm -f "$tmp"
+    log_ok "Rofi power menu theme already active locally: $SELECTED_PROFILE"
+    return 0
+  fi
+
+  log_info "Applying Rofi power menu theme profile: $SELECTED_PROFILE"
+  ensure_real_dir "$(dirname "$target")"
+  backup_existing_target "$target"
+  run_cmd cp -a "$tmp" "$target"
+  rm -f "$tmp"
+  log_ok "Copied Rofi power menu theme locally with columns: $columns"
 }
 
 remove_obsolete_config() {
