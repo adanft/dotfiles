@@ -13,6 +13,7 @@ stage_user_configs() {
     ".tmux:$HOME/.tmux"
     ".tmux.conf:$HOME/.tmux.conf"
     ".zshrc:$HOME/.zshrc"
+    ".colors.sh:$HOME/.colors.sh"
     "Wallpapers:$HOME/Wallpapers"
     ".face:$HOME/.face"
   )
