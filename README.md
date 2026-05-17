@@ -234,11 +234,13 @@ It asks before enabling services during a real install:
 | `power-profiles-daemon.service` | desktop, laptop |
 | `bluetooth.service` | desktop, laptop |
 
-Plymouth is set to the custom theme. The installer warns if `/etc/mkinitcpio.conf` does not include the `plymouth` hook and asks before running:
+Plymouth is set to the custom theme. On a plain Arch system using `mkinitcpio`, the installer warns if `/etc/mkinitcpio.conf` does not include the `plymouth` hook and asks before running:
 
 ```sh
 sudo mkinitcpio -P
 ```
+
+If your system uses Dracut instead, the installer still copies the Plymouth theme files, but the splash setup is manual. You can skip this if you do not want a boot/shutdown splash.
 
 ## Bootloader notes for TTY colors and Plymouth
 
@@ -282,11 +284,46 @@ CMDLINE=root=... rw quiet splash vt.default_red=... vt.default_grn=... vt.defaul
 
 > Note: on some Limine setups, kernel updates or boot-entry regeneration can overwrite manual TTY color changes. I have not fully investigated the exact cause yet. If the colors disappear after an update, reapply the parameters above for now.
 
-For Plymouth, make sure your initramfs uses the `plymouth` hook. On Arch with `mkinitcpio`, that means adding `plymouth` to `HOOKS` in `/etc/mkinitcpio.conf`, then running:
+For Plymouth, make sure your initramfs includes Plymouth support.
+
+On Arch with `mkinitcpio`, that means adding `plymouth` to `HOOKS` in `/etc/mkinitcpio.conf`, then running:
 
 ```sh
 sudo mkinitcpio -P
 ```
+
+On any setup using Dracut, create a Plymouth Dracut config file:
+
+```sh
+sudoedit /etc/dracut.conf.d/plymouth.conf
+```
+
+Add:
+
+```conf
+add_dracutmodules+=" plymouth "
+```
+
+Then enable the splash in your bootloader kernel options. The exact file depends on your bootloader. For example, on systemd-boot, edit the entry under `/boot/loader/entries/*.conf` and append `splash` to the `options` line:
+
+```text
+options root=... rw quiet splash
+```
+
+Finally select the copied theme and rebuild the Dracut initramfs:
+
+```sh
+sudo plymouth-set-default-theme custom
+sudo dracut-rebuild
+```
+
+If `dracut-rebuild` is not available, use:
+
+```sh
+sudo dracut --regenerate-all --force
+```
+
+Do not use `plymouth-set-default-theme -R` on Dracut systems if it tries to call `mkinitcpio`.
 
 ## Hyprland keybindings
 
@@ -412,6 +449,6 @@ Use your own Neovim configuration if you want one. This keeps the desktop instal
 1. Reboot or log out/in if Zsh, Greetd, or Plymouth changes need to apply.
 2. Install SF Pro Display manually if you want the intended font match.
 3. Install Tmux plugins with TPM using `Ctrl-a + I` inside tmux.
-4. If using Plymouth, confirm the `plymouth` hook exists in `/etc/mkinitcpio.conf` and run `sudo mkinitcpio -P` when ready.
+4. If using Plymouth, finish the initramfs step for your system: `sudo mkinitcpio -P` on mkinitcpio, or `sudo plymouth-set-default-theme custom && sudo dracut-rebuild` on Dracut.
 5. Add bootloader kernel parameters if you want the TTY color palette.
 6. Add screenshots under `docs/images/` using the suggested names above.
