@@ -6,9 +6,10 @@ success_symbol = "[](bold green)"
 vicmd_symbol = "[](bold yellow)"
 
 [directory]
+format = "[$path]($style) [$read_only]($read_only_style) "
 style = "bold blue"
+truncation_length = 4
 read_only = ""
-truncation_symbol = ".../"
 
 [cmd_duration]
 min_time = 1000

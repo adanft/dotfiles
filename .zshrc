@@ -76,7 +76,7 @@ alias catn='bat --theme="Catppuccin Mocha" --style=numbers'
 alias ll="ls -l"
 alias la="ls -a"
 alias lla="ls -la"
-alias lt="ls --tree"
+alias tree="ls --tree"
 alias grep="grep --color=auto"
 alias ff="fastfetch"
 
