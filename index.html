@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logo editor</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      background: #0f172a;
+      color: #e5e7eb;
+      font-family: system-ui, sans-serif;
+    }
+
+    aside {
+      padding: 18px;
+      border-right: 1px solid #334155;
+      background: #111827;
+    }
+
+    main {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button.secondary { background: #475569; }
+    button.danger { background: #dc2626; }
+
+    pre {
+      white-space: pre-wrap;
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 96px;
+      font-size: 12px;
+    }
+
+    .logo-frame { background: #ffffff; }
+
+    svg { display: block; }
+
+    #debug-points circle {
+      cursor: pointer;
+    }
+
+    #debug-points circle.selected {
+      fill: #facc15;
+      stroke: #dc2626;
+      stroke-width: 4;
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <h1>SVG points</h1>
+    <p>Seleccioná puntos blancos del SVG. Para unir, seleccioná 2 puntos: el segundo se mueve al primero y se reemplaza en el <code>path</code>.</p>
+
+    <button id="join">Unir 2 puntos</button>
+    <button id="delete" class="danger">Eliminar punto guía</button>
+    <button id="clear" class="secondary">Limpiar selección</button>
+    <button id="copy" class="secondary">Copiar SVG actual</button>
+
+    <h2>Selección</h2>
+    <pre id="status">Cargando SVG...</pre>
+  </aside>
+
+  <main>
+    <div id="logo-frame" class="logo-frame">
+      <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Logo vectorizado">
+        <defs>
+          <linearGradient id="logoGradient" x1="0" y1="0" x2="512" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#6747C8"/>
+            <stop offset="50%" stop-color="#3775D9"/>
+            <stop offset="100%" stop-color="#00A9EC"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#logoGradient)" d="M256 25.6 L507.39 463.58 A100.06 100.06 0 0 1 357.19 432.92 L257.63 259.46 L189.90 381.38 L325.49 382.71 A126 126 0 0 1 201.04 486.4 L1.04 484.53 Z"/>
+
+      </svg>
+    </div>
+  </main>
+
+  <script>
+    const frame = document.querySelector('#logo-frame');
+    const status = document.querySelector('#status');
+    const selected = [];
+
+    const fmt = (value) => String(Number.parseFloat(value).toFixed(2)).replace(/\.00$/, '');
+
+    function updateStatus() {
+      if (!selected.length) {
+        status.textContent = 'Sin puntos seleccionados.';
+        return;
+      }
+
+      status.textContent = selected.map((circle, index) => {
+        return `${index + 1}. x=${circle.getAttribute('cx')} y=${circle.getAttribute('cy')}`;
+      }).join('\n');
+    }
+
+    function setSelected(circle) {
+      if (circle.classList.contains('selected')) {
+        circle.classList.remove('selected');
+        selected.splice(selected.indexOf(circle), 1);
+      } else {
+        if (selected.length === 2) {
+          selected.shift().classList.remove('selected');
+        }
+        circle.classList.add('selected');
+        selected.push(circle);
+      }
+      updateStatus();
+    }
+
+    function bindPoints() {
+      frame.querySelectorAll('#debug-points circle').forEach((circle) => {
+        circle.addEventListener('click', (event) => {
+          event.stopPropagation();
+          setSelected(circle);
+        });
+      });
+      updateStatus();
+    }
+
+    function replacePointInPaths(fromX, fromY, toX, toY) {
+      frame.querySelectorAll('path').forEach((path) => {
+        let d = path.getAttribute('d');
+        const patterns = [
+          new RegExp(`${fromX}\\s+${fromY}`, 'g'),
+          new RegExp(`${fmt(fromX)}\\s+${fmt(fromY)}`, 'g')
+        ];
+
+        patterns.forEach((pattern) => {
+          d = d.replace(pattern, `${toX} ${toY}`);
+        });
+
+        path.setAttribute('d', d);
+      });
+    }
+
+    document.querySelector('#join').addEventListener('click', () => {
+      if (selected.length !== 2) {
+        status.textContent = 'Seleccioná exactamente 2 puntos para unir.';
+        return;
+      }
+
+      const [target, source] = selected;
+      const toX = target.getAttribute('cx');
+      const toY = target.getAttribute('cy');
+      const fromX = source.getAttribute('cx');
+      const fromY = source.getAttribute('cy');
+
+      replacePointInPaths(fromX, fromY, toX, toY);
+      source.remove();
+      selected.length = 0;
+      frame.querySelectorAll('.selected').forEach((node) => node.classList.remove('selected'));
+      status.textContent = `Unido: ${fromX},${fromY} → ${toX},${toY}`;
+    });
+
+    document.querySelector('#delete').addEventListener('click', () => {
+      if (selected.length !== 1) {
+        status.textContent = 'Seleccioná 1 punto guía para eliminar.';
+        return;
+      }
+
+      const point = selected.pop();
+      const x = point.getAttribute('cx');
+      const y = point.getAttribute('cy');
+      point.remove();
+      status.textContent = `Punto guía eliminado: ${x},${y}\nNota: esto no borra comandos del path; solo limpia el punto visual.`;
+    });
+
+    document.querySelector('#clear').addEventListener('click', () => {
+      selected.splice(0).forEach((circle) => circle.classList.remove('selected'));
+      updateStatus();
+    });
+
+    document.querySelector('#copy').addEventListener('click', async () => {
+      const svg = frame.querySelector('svg').outerHTML;
+      await navigator.clipboard.writeText(svg);
+      status.textContent = 'SVG actual copiado al portapapeles.';
+    });
+
+    bindPoints();
+  </script>
+</body>
+</html>

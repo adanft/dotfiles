@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Logo vectorizado">
+  <defs>
+    <linearGradient id="logoGradient" x1="0" y1="0" x2="512" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6747C8"/>
+      <stop offset="50%" stop-color="#3775D9"/>
+      <stop offset="100%" stop-color="#00A9EC"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#logoGradient)" d="M259.03 25.6 L507.93 459.24 A116.37 116.37 0 0 1 350.26 415.57 L260.66 259.46 L192.93 381.38 L330.83 381.38 A127.58 127.58 0 0 1 204.07 486.4 L4.07 484.53 Z"/>
+</svg>
