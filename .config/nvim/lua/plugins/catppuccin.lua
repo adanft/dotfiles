@@ -1,36 +1,17 @@
 return {
   "catppuccin/nvim",
   name = "catppuccin",
+  lazy = false,
   priority = 1000,
   opts = {
     flavour = "mocha",
-    transparent_background = true,
     auto_integrations = true,
-    float = {
-      transparent = true,
-      solid = false,
-    },
-    integrations = {
-      telescope = {
-        enabled = true,
-      },
-      which_key = true,
-      mason = true,
-    },
+    transparent_background = true,
     custom_highlights = function(colors)
       return {
-        Search = { bg = "#3d67d7", fg = "#c8d3f5", bold = true },
-        IncSearch = { bg = "#ff007c", fg = "#c8d3f5", bold = true },
-        Substitute = { bg = "#14dba6", fg = "#1e1e2e", bold = true },
-        Visual = { bg = "#364151" },
-        FlashMatch = { bg = "#3d67d7", fg = "#c8d3f5", bold = true },
-        FlashCurrent = { bg = "#ff007c", fg = "#c8d3f5", bold = true },
-        FlashLabel = { bg = "#14dba6", fg = "#1e1e2e", bold = true },
-        FlashBackdrop = { fg = "#45475a" },
-        ["@tag"] = { fg = "#f9e2af" },
-        ["@tag.builtin"] = { fg = "#83d4e2" },
-        ["@tag.delimiter"] = { fg = "#f38ba8" },
-        ["@tag.attribute"] = { fg = "#f38ba8" },
+        NormalFloat = { bg = "NONE" },
+        FloatBorder = { fg = colors.blue, bg = "NONE" },
+        FloatTitle = { fg = colors.blue, bg = "NONE" },
       }
     end,
   },

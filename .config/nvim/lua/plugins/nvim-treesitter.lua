@@ -23,15 +23,14 @@ return {
       "dockerfile",
       "gitignore",
       "zsh",
-      "tmux",
-      "slint",
       "go",
     }
 
     vim.api.nvim_create_autocmd("FileType", {
       callback = function(args)
         pcall(vim.treesitter.start, args.buf)
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end,
     })
   end,

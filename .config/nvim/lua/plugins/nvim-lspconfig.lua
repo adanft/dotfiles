@@ -13,7 +13,7 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)
         local function opts(desc)
-          return { buffer = args.bufnr, desc = "LSP " .. desc }
+          return { buffer = args.buf, desc = "LSP " .. desc }
         end
 
         map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
@@ -26,8 +26,13 @@ return {
         map("n", "gI", vim.lsp.buf.implementation, opts "Go to Implementation")
         map("n", "gy", vim.lsp.buf.type_definition, opts "Go to Type Definition")
         map("n", "<leader>sh", vim.lsp.buf.signature_help, opts "Signature Help")
-        map("n", "[[", vim.diagnostic.goto_prev, opts "Prev diagnostic")
-        map("n", "]]", vim.diagnostic.goto_next, opts "Next diagnostic")
+        map("n", "[[", function()
+          vim.diagnostic.jump { count = -1 }
+        end, opts "Prev diagnostic")
+
+        map("n", "]]", function()
+          vim.diagnostic.jump { count = 1 }
+        end, opts "Next diagnostic")
       end,
     })
   end,

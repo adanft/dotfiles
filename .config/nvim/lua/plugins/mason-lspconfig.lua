@@ -12,10 +12,8 @@ return {
       "biome",
       "ruff",
       "rust_analyzer",
-      "slint_lsp",
       "gopls",
       "jsonls",
     },
-    automatic_enable = true,
   },
 }

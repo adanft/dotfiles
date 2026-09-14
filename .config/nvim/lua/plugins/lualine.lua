@@ -1,13 +1,13 @@
-local mocha = require("themes.mocha").theme
-
 return {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
   dependencies = { "nvim-mini/mini.icons" },
   opts = {
     options = {
-      theme = mocha,
+      theme = "auto",
       globalstatus = true,
+      component_separators = { left = "", right = "" },
+      section_separators = { left = "", right = "" },
     },
     sections = {
       lualine_a = {
@@ -37,30 +37,17 @@ return {
       lualine_x = {
         {
           "lsp_status",
-          icon = { " " },
-          color = { fg = "#89b4fa" },
-          ignore_lsp = { "" },
-          separator = "",
+          icon = "󰒋 ",
           symbols = {
-            spinner = { "󱦟", "󰞌" },
-            done = "",
-            separator = " ",
+            spinner = { "󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥" },
+            done = "󰄬",
           },
-        },
-        {
-          function()
-            return ""
-          end,
-          separator = "",
-          color = { fg = "#e7c787" },
-          padding = 0,
         },
         {
           function()
             return vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
           end,
           icon = " ",
-          color = { fg = "#1e222a", bg = "#e7c787", gui = "bold" },
         },
       },
       lualine_y = {
@@ -75,6 +62,3 @@ return {
     },
   },
 }
-
---component_separators = { left = '', right = ''},
---section_separators = { left = '', right = ''},

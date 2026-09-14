@@ -2,7 +2,6 @@ return {
   "folke/flash.nvim",
   event = "VeryLazy",
   opts = {},
-  config = {},
   keys = {
     {
       "<leader>fs",

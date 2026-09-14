@@ -12,7 +12,4 @@ return {
       show_help = "<f1>",
     },
   },
-  init = function()
-    vim.g.loaded_netrwPlugin = 1
-  end,
 }
