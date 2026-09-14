@@ -1,0 +1,20 @@
+[display]
+show_time = true
+
+[user_menu]
+enabled = true
+min_uid = 1000
+max_uid = 60000
+
+[secret]
+mode = "characters"
+characters = "*"
+
+[theme]
+border    = "blue"
+text      = "white"
+prompt    = "red"
+time      = "blue"
+action    = "green"
+button    = "blue"
+input     = "white"

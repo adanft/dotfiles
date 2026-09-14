@@ -13,6 +13,7 @@ stage_verify() {
     Hyprland
     waybar
     rofi
+    tuigreet
     ghostty
     alacritty
     kitty
@@ -31,6 +32,7 @@ stage_verify() {
     slurp
     imv
     wl-copy
+    setvtrgb
     jq
   )
 
@@ -47,5 +49,11 @@ stage_verify() {
     log_ok "greetd.service is enabled."
   else
     log_warn "greetd.service is not enabled."
+  fi
+
+  if system_service_enabled tty-colors.service; then
+    log_ok "tty-colors.service is enabled."
+  else
+    log_warn "tty-colors.service is not enabled."
   fi
 }

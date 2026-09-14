@@ -171,7 +171,7 @@ hyprland xdg-desktop-portal-hyprland waybar rofi thunar
 ghostty alacritty kitty zsh starship tmux neovim yazi fastfetch
 hyprpaper hypridle hyprlock hyprpicker swaync wireplumber
 polkit-gnome greetd greetd-tuigreet plymouth grim slurp imv
-wl-clipboard jq libnotify which xdg-user-dirs networkmanager git
+wl-clipboard jq kbd libnotify which xdg-user-dirs networkmanager git
 bat fzf eza zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
 ```
 
@@ -219,7 +219,9 @@ Greetd is the login manager, Tuigreet is the text-based login screen, and Plymou
 | Source | Destination |
 | --- | --- |
 | `greetd/config.toml` | `/etc/greetd/config.toml` |
-| `greetd/start` | `/etc/greetd/start` |
+| `greetd/tuigreet.toml` | `/etc/tuigreet/config.toml` |
+| `tty/tty-colors.conf` | `/usr/share/themes/tty-colors.conf` |
+| `tty/tty-colors.service` | `/etc/systemd/system/tty-colors.service` |
 | `plymouth/custom.plymouth` | `/usr/share/plymouth/themes/custom/custom.plymouth` |
 | `plymouth/custom.script` | `/usr/share/plymouth/themes/custom/custom.script` |
 | `plymouth/logo.png` | `/usr/share/plymouth/themes/custom/logo.png` |
@@ -230,6 +232,7 @@ It asks before enabling services during a real install:
 | Service | Profiles |
 | --- | --- |
 | `NetworkManager.service` | all profiles |
+| `tty-colors.service` | all profiles |
 | `greetd.service` | all profiles |
 | `power-profiles-daemon.service` | desktop, laptop |
 | `bluetooth.service` | desktop, laptop |
@@ -242,47 +245,9 @@ sudo mkinitcpio -P
 
 If your system uses Dracut instead, the installer still copies the Plymouth theme files, but the splash setup is manual. You can skip this if you do not want a boot/shutdown splash.
 
-## Bootloader notes for TTY colors and Plymouth
+## TTY colors and Plymouth
 
-This section is optional. Skip it if you do not know which bootloader you use.
-
-The repo includes a TTY color palette as kernel parameters. Add the parameters to your bootloader command line if you want the same TTY colors.
-
-```text
-vt.default_red=24,243,166,249,137,245,148,186,88,243,166,249,137,245,148,166 vt.default_grn=24,139,227,226,180,194,226,194,91,139,227,226,180,194,226,173 vt.default_blu=37,168,161,175,250,231,213,222,112,168,161,175,250,231,213,200
-```
-
-### GRUB
-
-Edit `/etc/default/grub` and append the values to `GRUB_CMDLINE_LINUX`:
-
-```sh
-GRUB_CMDLINE_LINUX="vt.default_red=24,243,166,249,137,245,148,186,88,243,166,249,137,245,148,166 vt.default_grn=24,139,227,226,180,194,226,194,91,139,227,226,180,194,226,173 vt.default_blu=37,168,161,175,250,231,213,222,112,168,161,175,250,231,213,200"
-```
-
-Then regenerate GRUB config:
-
-```sh
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-```
-
-### systemd-boot
-
-Edit your loader entry under `/boot/loader/entries/*.conf` and append the values to the `options` line:
-
-```text
-options root=... rw quiet splash vt.default_red=... vt.default_grn=... vt.default_blu=...
-```
-
-### Limine
-
-Edit your Limine entry and append the values to the kernel command line, usually the `CMDLINE=` line:
-
-```text
-CMDLINE=root=... rw quiet splash vt.default_red=... vt.default_grn=... vt.default_blu=...
-```
-
-> Note: on some Limine setups, kernel updates or boot-entry regeneration can overwrite manual TTY color changes. I have not fully investigated the exact cause yet. If the colors disappear after an update, reapply the parameters above for now.
+The installer copies the TTY palette and enables `tty-colors.service`. The service applies the palette with `setvtrgb` after Plymouth exits and before Greetd starts, so Tuigreet inherits the same named terminal colors without bootloader-specific configuration.
 
 For Plymouth, make sure your initramfs includes Plymouth support.
 
@@ -446,9 +411,8 @@ Use your own Neovim configuration if you want one. This keeps the desktop instal
 
 ## After installation checklist
 
-1. Reboot or log out/in if Zsh, Greetd, or Plymouth changes need to apply.
+1. Reboot or log out/in if Zsh, Greetd, TTY colors, or Plymouth changes need to apply.
 2. Install SF Pro Display manually if you want the intended font match.
 3. Install Tmux plugins with TPM using `Ctrl-a + I` inside tmux.
 4. If using Plymouth, finish the initramfs step for your system: `sudo mkinitcpio -P` on mkinitcpio, or `sudo plymouth-set-default-theme custom && sudo dracut-rebuild` on Dracut.
-5. Add bootloader kernel parameters if you want the TTY color palette.
-6. Add screenshots under `docs/images/` using the suggested names above.
+5. Add screenshots under `docs/images/` using the suggested names above.

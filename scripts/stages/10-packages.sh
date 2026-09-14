@@ -35,6 +35,7 @@ stage_packages() {
     imv
     wl-clipboard
     jq
+    kbd
     libnotify
     which
     xdg-user-dirs

@@ -92,7 +92,10 @@ stage_system_configs() {
   log_info "Installing system configuration files."
 
   install_system_file "$REPO_ROOT/greetd/config.toml" /etc/greetd/config.toml 0644
-  install_system_file "$REPO_ROOT/greetd/start" /etc/greetd/start 0755
+  install_system_file "$REPO_ROOT/greetd/tuigreet.toml" /etc/tuigreet/config.toml 0644
+
+  install_system_file "$REPO_ROOT/tty/tty-colors.conf" /usr/share/themes/tty-colors.conf 0644
+  install_system_file "$REPO_ROOT/tty/tty-colors.service" /etc/systemd/system/tty-colors.service 0644
 
   install_plymouth_theme
   set_default_plymouth_theme

@@ -18,8 +18,10 @@ confirm_and_enable_service() {
 
 stage_services() {
   log_info "Enabling system services."
+  run_root systemctl daemon-reload
 
   confirm_and_enable_service NetworkManager.service
+  confirm_and_enable_service tty-colors.service
   confirm_and_enable_service greetd.service
 
   if [[ "$SELECTED_PROFILE" == "laptop" || "$SELECTED_PROFILE" == "desktop" ]]; then

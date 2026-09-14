@@ -1,0 +1,14 @@
+[Unit]
+Description=Set Linux TTY color palette
+Documentation=man:setvtrgb(8)
+ConditionPathExists=/usr/share/themes/tty-colors.conf
+After=systemd-vconsole-setup.service plymouth-quit.service
+Before=greetd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/setvtrgb /usr/share/themes/tty-colors.conf
+
+[Install]
+WantedBy=multi-user.target
