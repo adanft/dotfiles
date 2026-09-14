@@ -3,6 +3,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 typeset -U path PATH
+
 path=("$HOME/.local/bin" $path)
 export PATH
 
@@ -46,7 +47,7 @@ zinit cdreplay -q
 zstyle ':completion:*' menu no
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd --color=always --icon=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --color=always --icons=always "$realpath"'
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # History configurations
@@ -69,7 +70,7 @@ export EDITOR=nvim
 export SUDO_PROMPT="passwd: "
 
 # Aliases
-alias ls='lsd --group-dirs=first'
+alias ls='eza --group-directories-first --icons=always'
 alias cat='bat --theme="Catppuccin Mocha" -P -p'
 alias catp='bat --theme="Catppuccin Mocha" -p'
 alias catn='bat --theme="Catppuccin Mocha" --style=numbers'

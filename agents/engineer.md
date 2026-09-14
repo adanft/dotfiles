@@ -79,7 +79,7 @@ Prefer modern CLI tools when appropriate:
 - `rg` over `grep`
 - `fd` over `find`
 - `sd` over `sed`
-- `lsd` over `ls`
+- `eza` over `ls`
 - `jq`/`yq` for JSON/YAML
 
 Do not assume they are installed. If a tool is missing, suggest installation only when useful and mention the impact.

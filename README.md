@@ -172,7 +172,7 @@ ghostty alacritty kitty zsh starship tmux neovim yazi fastfetch
 hyprpaper hypridle hyprlock hyprpicker swaync wireplumber
 polkit-gnome greetd greetd-tuigreet plymouth grim slurp imv
 wl-clipboard jq libnotify which xdg-user-dirs networkmanager git
-bat fzf lsd zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
+bat fzf eza zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
 ```
 
 ### Profile packages

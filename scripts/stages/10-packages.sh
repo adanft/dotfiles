@@ -42,7 +42,7 @@ stage_packages() {
     git
     bat
     fzf
-    lsd
+    eza
     zoxide
     ttf-iosevkaterm-nerd
     ttf-nerd-fonts-symbols
