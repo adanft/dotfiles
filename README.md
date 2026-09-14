@@ -1,6 +1,6 @@
 # adanft dotfiles
 
-A clean, practical Arch Linux desktop built around **Hyprland**, **Waybar**, **Rofi**, **Zsh**, **Tmux**, and modern terminal tooling. The goal is not to install every possible tool: it installs a focused working environment with enough pieces to start coding, navigating, launching apps, taking screenshots, managing sessions, and using a polished Wayland desktop immediately.
+A clean, practical Arch Linux desktop built around **Hyprland**, **Zsh**, **Tmux**, and modern terminal tooling. The goal is not to install every possible tool: it installs a focused working environment for coding, navigation, session management, and a polished Wayland desktop.
 
 ## Quick start
 
@@ -35,43 +35,32 @@ Use `laptop` for battery/backlight support, `desktop` for a full workstation, an
 
 ## Screenshots
 
-![Desktop preview](docs/images/desktop.png)
-
-| Waybar | Rofi launcher |
+| Terminal | Hyprlock |
 | --- | --- |
-| ![Waybar preview](docs/images/waybar.png) | ![Rofi launcher preview](docs/images/rofi-launcher.png) |
+| ![Terminal preview](docs/images/terminal.png) | ![Hyprlock preview](docs/images/hyprlock.png) |
 
-| Rofi power menu | Terminal |
+| Tuigreet | Tmux |
 | --- | --- |
-| ![Rofi power menu preview](docs/images/rofi-power-menu.png) | ![Terminal preview](docs/images/terminal.png) |
+| ![Tuigreet preview](docs/images/tuigreet.png) | ![Tmux preview](docs/images/terminal-tmux.png) |
 
-| Hyprlock | Tuigreet |
-| --- | --- |
-| ![Hyprlock preview](docs/images/hyprlock.png) | ![Tuigreet preview](docs/images/tuigreet.png) |
-
-| Tmux | Plymouth |
-| --- | --- |
-| ![Tmux preview](docs/images/terminal-tmux.png) | ![Plymouth preview](docs/images/plymouth.png) |
+![Plymouth preview](docs/images/plymouth.png)
 
 ## What this setup includes
 
 | Area | Tools/configs |
 | --- | --- |
 | Window manager | Hyprland Lua config, portable monitor defaults, workspace rules, keybindings. |
-| Bar | Waybar with profile-specific layouts for laptop, desktop, and VM. |
-| Launcher/menus | Rofi launcher, screenshot menu, and profile-aware power menu. |
 | Shell | Zsh, Starship, Zinit bootstrap, `$HOME/.local/bin` in PATH. |
 | Terminal workflow | Ghostty, Kitty, Alacritty, Tmux, Yazi, Fastfetch. |
-| Notifications | SwayNC. |
 | Lock/idle/wallpaper | Hyprlock, Hypridle, Hyprpaper. |
 | Login/boot visuals | Greetd/Tuigreet and Plymouth custom theme. |
 | Screenshots/clipboard | Grim, Slurp, wl-clipboard, IMV. |
-| Networking | NetworkManager and `nmtui` integration from Waybar. |
+| Networking | NetworkManager. |
 
 ## Why this is a good base
 
 - **Minimal but complete**: it avoids random extras while still providing a working daily desktop.
-- **Profile-aware**: laptops, desktops, and VMs get different power, Waybar, and service behavior.
+- **Profile-aware**: laptops, desktops, and VMs get different power and service behavior.
 - **Safe install model**: existing files are backed up before replacement; unknown files are not deleted.
 - **Reviewable structure**: the installer is split into small stages under `scripts/stages/` and shared helpers under `scripts/lib/`.
 
@@ -135,8 +124,8 @@ The installer must be run as your regular user, not as root. Privileged actions 
 Backup example:
 
 ```text
-~/.config/rofi/scripts/power-menu.sh
-~/.config/rofi/scripts/power-menu.backup.20260516-073726-753657909.sh
+~/.config/hypr/hyprland.lua
+~/.config/hypr/hyprland.backup.20260516-073726-753657909.lua
 ```
 
 ## Profiles
@@ -146,30 +135,22 @@ All profiles install the shared Hyprland desktop base. The differences are only 
 | Area | Desktop | Laptop | VM |
 | --- | --- | --- | --- |
 | Extra packages | `blueman`, `power-profiles-daemon` | `blueman`, `brightnessctl`, `power-profiles-daemon` | None |
-| Waybar Wi-Fi | Yes, `wlan0` | Yes, `wlan0` | No |
-| Waybar LAN | Yes | Yes | Yes |
-| Waybar Bluetooth | Yes | Yes | No |
-| Waybar battery | No | Yes | No |
-| Waybar backlight | No | Yes, `intel_backlight` | No |
-| Waybar power profile | Yes | Yes | No |
 | Hypridle lock | Yes | Yes | Yes |
 | Hypridle dim screen | No | Yes | No |
 | Hypridle DPMS | Yes | Yes | No |
 | Hypridle suspend | Yes | Yes | No |
-| Rofi suspend option | Yes | Yes | No |
-| Rofi power menu columns | 5 | 5 | 4 |
 | Services | NetworkManager, greetd, power profiles, Bluetooth | NetworkManager, greetd, power profiles, Bluetooth | NetworkManager, greetd |
 
-The VM profile is intentionally conservative: no suspend, no Bluetooth, no power profiles, no battery/backlight modules, and no Wi-Fi module in Waybar.
+The VM profile is intentionally conservative: no suspend, Bluetooth, power profiles, or backlight management.
 
 ## Packages installed by the installer
 
 ### Shared packages
 
 ```text
-hyprland xdg-desktop-portal-hyprland waybar rofi thunar
+hyprland xdg-desktop-portal-hyprland thunar
 ghostty alacritty kitty zsh starship tmux neovim yazi fastfetch
-hyprpaper hypridle hyprlock hyprpicker swaync wireplumber
+hyprpaper hypridle hyprlock hyprpicker wireplumber playerctl
 polkit-gnome greetd greetd-tuigreet plymouth grim slurp imv
 wl-clipboard jq kbd libnotify which xdg-user-dirs networkmanager git
 bat fzf eza zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
@@ -183,13 +164,10 @@ bat fzf eza zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
 | `laptop` | `blueman`, `brightnessctl`, `power-profiles-daemon` |
 | `vm` | None |
 
-Some tools are intentionally not listed as explicit packages when another package should bring them as a dependency. For example, `playerctl` is verified because Hyprland media key bindings use it, but it is expected to come from Waybar's dependency chain.
-
 ## What gets copied
 
 | Source | Destination |
 | --- | --- |
-| `.config/swaync` | `~/.config/swaync` |
 | `.config/ghostty` | `~/.config/ghostty` |
 | `.config/alacritty` | `~/.config/alacritty` |
 | `.config/kitty` | `~/.config/kitty` |
@@ -206,9 +184,6 @@ Profile-specific files are copied into normal runtime paths:
 | Profile source | Runtime destination |
 | --- | --- |
 | `.config/hypr/profiles/<profile>/hypridle.conf` | `~/.config/hypr/hypridle.conf` |
-| `.config/waybar/profiles/<profile>/config.jsonc` | `~/.config/waybar/config.jsonc` |
-| `.config/rofi/scripts/power-menu.sh` or `power-menu-vm.sh` | `~/.config/rofi/scripts/power-menu.sh` |
-| Generated Rofi power theme | `~/.config/rofi/themes/power-menu.rasi` |
 
 ## System files and services
 
@@ -305,10 +280,7 @@ Main modifier: `SUPER`.
 | `SUPER + J` | Toggle split direction. |
 | `SUPER + Tab` | Run layout toggle script. |
 | `SUPER + E` | Open Thunar. |
-| `SUPER + D` | Open Rofi launcher. |
-| `SUPER + X` | Open Rofi power menu. |
 | `SUPER + Shift + P` | Open Hyprpicker color picker. |
-| `Print` | Open screenshot menu. |
 | `SUPER + Left/Right/Up/Down` | Focus window in that direction. |
 | `SUPER + 1..9` | Switch to workspace 1..9. |
 | `SUPER + Shift + 1..9` | Move focused window to workspace 1..9. |
@@ -415,4 +387,3 @@ Use your own Neovim configuration if you want one. This keeps the desktop instal
 2. Install SF Pro Display manually if you want the intended font match.
 3. Install Tmux plugins with TPM using `Ctrl-a + I` inside tmux.
 4. If using Plymouth, finish the initramfs step for your system: `sudo mkinitcpio -P` on mkinitcpio, or `sudo plymouth-set-default-theme custom && sudo dracut-rebuild` on Dracut.
-5. Add screenshots under `docs/images/` using the suggested names above.

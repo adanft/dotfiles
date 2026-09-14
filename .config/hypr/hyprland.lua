@@ -36,7 +36,7 @@ hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 -- hl.workspace_rule({ workspace = "9", monitor = "DP-1" })
 
 -- Keep workspaces 1-9 available on every profile without pinning them to a
--- physical monitor. Waybar also declares these as persistent workspaces.
+-- physical monitor.
 for workspace = 1, 9 do
   hl.workspace_rule({ workspace = tostring(workspace) })
 end
@@ -48,22 +48,18 @@ end
 local terminal = "ghostty"
 local secondary_terminal = "kitty"
 local file_manager = "thunar"
-local menu = "rofi -no-config -no-lazy-grab -show drun -modi drun -theme ~/.config/rofi/themes/launcher.rasi"
 local picker = "hyprpicker -a"
 local focus_workspace = "$HOME/.config/hypr/scripts/focus_workspace.sh"
 local move_window_workspace = "$HOME/.config/hypr/scripts/move_window_workspace.sh"
 local toggle_layout = "$HOME/.config/hypr/scripts/toggle_layout.sh"
-local screenshot = "$HOME/.config/rofi/scripts/screenshot.sh"
 
 -------------
 -- Startup --
 -------------
 
 hl.on("hyprland.start", function()
-  hl.exec_cmd("waybar")
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("hypridle")
-  hl.exec_cmd("swaync")
   hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
 end)
 
@@ -163,10 +159,7 @@ hl.bind(main_mod .. " + J", hl.dsp.layout("togglesplit"))
 hl.bind(main_mod .. " + TAB", hl.dsp.exec_cmd(toggle_layout))
 
 hl.bind(main_mod .. " + E", hl.dsp.exec_cmd(file_manager))
-hl.bind(main_mod .. " + D", hl.dsp.exec_cmd(menu))
-hl.bind(main_mod .. " + X", hl.dsp.exec_cmd("~/.config/rofi/scripts/power-menu.sh"))
 hl.bind(main_mod .. " + SHIFT + P", hl.dsp.exec_cmd(picker))
-hl.bind("Print", hl.dsp.exec_cmd(screenshot))
 
 hl.bind(main_mod .. " + left", hl.dsp.focus({ direction = "l" }))
 hl.bind(main_mod .. " + right", hl.dsp.focus({ direction = "r" }))

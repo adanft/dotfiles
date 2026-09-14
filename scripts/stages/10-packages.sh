@@ -8,8 +8,6 @@ stage_packages() {
   local base_packages=(
     hyprland
     xdg-desktop-portal-hyprland
-    waybar
-    rofi
     thunar
     ghostty
     alacritty
@@ -24,8 +22,8 @@ stage_packages() {
     hypridle
     hyprlock
     hyprpicker
-    swaync
     wireplumber
+    playerctl
     polkit-gnome
     greetd
     greetd-tuigreet
@@ -54,7 +52,7 @@ stage_packages() {
   local profile_packages=()
 
   if [[ "$SELECTED_PROFILE" == "laptop" || "$SELECTED_PROFILE" == "desktop" ]]; then
-    # Laptop/desktop Waybar profiles expose Bluetooth and open blueman-manager.
+    # Laptop and desktop profiles include graphical Bluetooth management.
     profile_packages+=(blueman)
   fi
 

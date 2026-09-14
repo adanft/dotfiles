@@ -11,8 +11,6 @@ stage_verify() {
 
   local commands=(
     Hyprland
-    waybar
-    rofi
     tuigreet
     ghostty
     alacritty
@@ -27,7 +25,6 @@ stage_verify() {
     hyprpaper
     hypridle
     hyprlock
-    swaync
     grim
     slurp
     imv

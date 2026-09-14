@@ -4,7 +4,6 @@ stage_user_configs() {
   log_info "Copying repo-owned user configs into local home."
 
   local links=(
-    ".config/swaync:$HOME/.config/swaync"
     ".config/ghostty:$HOME/.config/ghostty"
     ".config/alacritty:$HOME/.config/alacritty"
     ".config/kitty:$HOME/.config/kitty"
@@ -26,8 +25,6 @@ stage_user_configs() {
   done
 
   copy_hypr_config
-  copy_waybar_config
-  copy_rofi_config
 
   set_default_shell_zsh
 }
@@ -78,76 +75,6 @@ copy_hypr_config() {
   apply_hypridle_profile
 }
 
-copy_waybar_config() {
-  copy_config_children "$REPO_ROOT/.config/waybar" "$HOME/.config/waybar" \
-    "style.css" \
-    "theme.css"
-
-  apply_waybar_profile
-}
-
-copy_rofi_config() {
-  ensure_real_dir "$HOME/.config/rofi"
-  copy_config "$REPO_ROOT/.config/rofi/shared" "$HOME/.config/rofi/shared"
-
-  copy_config_children "$REPO_ROOT/.config/rofi/themes" "$HOME/.config/rofi/themes" \
-    "launcher.rasi" \
-    "screenshot.rasi"
-
-  copy_config_children "$REPO_ROOT/.config/rofi/scripts" "$HOME/.config/rofi/scripts" \
-    "screenshot.sh"
-
-  apply_rofi_power_menu_profile
-}
-
-apply_rofi_power_menu_theme() {
-  local source_theme="$REPO_ROOT/.config/rofi/themes/power-menu.rasi"
-  local home_theme="$HOME/.config/rofi/themes/power-menu.rasi"
-  local columns="5"
-
-  if [[ "$SELECTED_PROFILE" == "vm" ]]; then
-    columns="4"
-  fi
-
-  [[ -f "$source_theme" ]] || die "Missing Rofi power menu theme: $source_theme"
-
-  copy_rofi_power_menu_theme_with_columns "$source_theme" "$home_theme" "$columns"
-}
-
-copy_rofi_power_menu_theme_with_columns() {
-  local source="$1"
-  local target="$2"
-  local columns="$3"
-  local tmp
-
-  if [[ "$DRY_RUN" == "1" ]]; then
-    log_info "dry-run: would copy $source -> $target with columns: $columns"
-    return 0
-  fi
-
-  tmp="$(mktemp)"
-  while IFS= read -r line; do
-    if [[ "$line" == *"columns:"* ]]; then
-      printf '    columns:                     %s;\n' "$columns"
-    else
-      printf '%s\n' "$line"
-    fi
-  done < "$source" > "$tmp"
-
-  if [[ -f "$target" ]] && cmp -s "$tmp" "$target"; then
-    rm -f "$tmp"
-    log_ok "Rofi power menu theme already active locally: $SELECTED_PROFILE"
-    return 0
-  fi
-
-  log_info "Applying Rofi power menu theme profile: $SELECTED_PROFILE"
-  ensure_real_dir "$(dirname "$target")"
-  backup_existing_target "$target"
-  run_cmd cp -a "$tmp" "$target"
-  rm -f "$tmp"
-  log_ok "Copied Rofi power menu theme locally with columns: $columns"
-}
-
 copy_active_profile_file() {
   local label="$1"
   local source="$2"
@@ -170,23 +97,6 @@ copy_active_profile_file() {
   fi
 }
 
-apply_rofi_power_menu_profile() {
-  local default_script="$REPO_ROOT/.config/rofi/scripts/power-menu.sh"
-  local vm_script="$REPO_ROOT/.config/rofi/scripts/power-menu-vm.sh"
-  local home_script="$HOME/.config/rofi/scripts/power-menu.sh"
-  local selected_script="$default_script"
-
-  if [[ "$SELECTED_PROFILE" == "vm" ]]; then
-    selected_script="$vm_script"
-    [[ -f "$vm_script" ]] || die "Missing VM Rofi power menu script: $vm_script"
-  else
-    [[ -f "$default_script" ]] || die "Missing default Rofi power menu script: $default_script"
-  fi
-
-  copy_active_profile_file "Rofi power menu" "$selected_script" "$home_script"
-  apply_rofi_power_menu_theme
-}
-
 apply_hypridle_profile() {
   local profile_config="$REPO_ROOT/.config/hypr/profiles/$SELECTED_PROFILE/hypridle.conf"
   local home_active_config="$HOME/.config/hypr/hypridle.conf"
@@ -195,16 +105,6 @@ apply_hypridle_profile() {
     die "Missing hypridle config for selected profile: $SELECTED_PROFILE"
 
   copy_active_profile_file "Hypridle" "$profile_config" "$home_active_config"
-}
-
-apply_waybar_profile() {
-  local profile_config="$REPO_ROOT/.config/waybar/profiles/$SELECTED_PROFILE/config.jsonc"
-  local home_active_config="$HOME/.config/waybar/config.jsonc"
-
-  [[ -f "$profile_config" ]] || \
-    die "Missing Waybar config for selected profile: $SELECTED_PROFILE"
-
-  copy_active_profile_file "Waybar" "$profile_config" "$home_active_config"
 }
 
 set_default_shell_zsh() {
