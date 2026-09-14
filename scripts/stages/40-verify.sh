@@ -17,14 +17,10 @@ stage_verify() {
     kitty
     zsh
     starship
-    tmux
     nvim
     playerctl
     yazi
     fastfetch
-    hyprpaper
-    hypridle
-    hyprlock
     grim
     slurp
     imv

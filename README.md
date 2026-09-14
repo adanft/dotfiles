@@ -1,6 +1,6 @@
 # adanft dotfiles
 
-A clean, practical Arch Linux desktop built around **Hyprland**, **Zsh**, **Tmux**, and modern terminal tooling. The goal is not to install every possible tool: it installs a focused working environment for coding, navigation, session management, and a polished Wayland desktop.
+A clean, practical Arch Linux base built around **Hyprland**, **Zsh**, and modern terminal tooling. The goal is to provide a focused environment for coding and navigation without imposing a full desktop shell.
 
 ## Quick start
 
@@ -20,7 +20,6 @@ A clean, practical Arch Linux desktop built around **Hyprland**, **Zsh**, **Tmux
    ```
 
 4. Reboot or log out/in after the installer finishes.
-5. Open tmux and install plugins with `Ctrl-a + I` if you use tmux.
 
 Use `laptop` for battery/backlight support, `desktop` for a full workstation, and `vm` for a minimal virtual machine setup.
 
@@ -31,17 +30,14 @@ Use `laptop` for battery/backlight support, `desktop` for a full workstation, an
 - The installer will ask before enabling services such as Greetd and NetworkManager.
 - Existing files that differ from the repo version are backed up next to themselves before being replaced.
 - Unknown files in existing config directories are left untouched.
+- No graphical PolicyKit authentication agent is installed; graphical applications cannot request credentials through a desktop prompt.
 - Skip the bootloader section if you do not know which bootloader you use yet.
 
 ## Screenshots
 
-| Terminal | Hyprlock |
+| Terminal | Tuigreet |
 | --- | --- |
-| ![Terminal preview](docs/images/terminal.png) | ![Hyprlock preview](docs/images/hyprlock.png) |
-
-| Tuigreet | Tmux |
-| --- | --- |
-| ![Tuigreet preview](docs/images/tuigreet.png) | ![Tmux preview](docs/images/terminal-tmux.png) |
+| ![Terminal preview](docs/images/terminal.png) | ![Tuigreet preview](docs/images/tuigreet.png) |
 
 ![Plymouth preview](docs/images/plymouth.png)
 
@@ -51,15 +47,14 @@ Use `laptop` for battery/backlight support, `desktop` for a full workstation, an
 | --- | --- |
 | Window manager | Hyprland Lua config, portable monitor defaults, workspace rules, keybindings. |
 | Shell | Zsh, Starship, Zinit bootstrap, `$HOME/.local/bin` in PATH. |
-| Terminal workflow | Ghostty, Kitty, Alacritty, Tmux, Yazi, Fastfetch. |
-| Lock/idle/wallpaper | Hyprlock, Hypridle, Hyprpaper. |
+| Terminal workflow | Ghostty, Kitty, Alacritty, Yazi, Fastfetch. |
 | Login/boot visuals | Greetd/Tuigreet and Plymouth custom theme. |
 | Screenshots/clipboard | Grim, Slurp, wl-clipboard, IMV. |
 | Networking | NetworkManager. |
 
 ## Why this is a good base
 
-- **Minimal but complete**: it avoids random extras while still providing a working daily desktop.
+- **Minimal and focused**: it provides the core environment without imposing optional desktop components.
 - **Profile-aware**: laptops, desktops, and VMs get different power and service behavior.
 - **Safe install model**: existing files are backed up before replacement; unknown files are not deleted.
 - **Reviewable structure**: the installer is split into small stages under `scripts/stages/` and shared helpers under `scripts/lib/`.
@@ -70,19 +65,12 @@ Use `laptop` for battery/backlight support, `desktop` for a full workstation, an
 - A user account with `sudo` access.
 - Internet access for package installation and first Zsh plugin bootstrap.
 - A Nerd Font capable of rendering icons.
-- `SF Pro Display` installed manually if you want the intended visual match.
 - Visual themes/icons installed manually if you want the exact look:
   - `Sweet-Rainbow`
   - `Sweet-Ambar-Blue-Dark-v40`
   - `candy-icons`
   - `Qogir`
   - `Qogir` cursor theme
-
-SF Pro Display is not vendored here. Install it separately from:
-
-```text
-https://github.com/chris-short/apple-san-francisco-pro-fonts
-```
 
 ## Install
 
@@ -135,13 +123,9 @@ All profiles install the shared Hyprland desktop base. The differences are only 
 | Area | Desktop | Laptop | VM |
 | --- | --- | --- | --- |
 | Extra packages | `blueman`, `power-profiles-daemon` | `blueman`, `brightnessctl`, `power-profiles-daemon` | None |
-| Hypridle lock | Yes | Yes | Yes |
-| Hypridle dim screen | No | Yes | No |
-| Hypridle DPMS | Yes | Yes | No |
-| Hypridle suspend | Yes | Yes | No |
 | Services | NetworkManager, greetd, power profiles, Bluetooth | NetworkManager, greetd, power profiles, Bluetooth | NetworkManager, greetd |
 
-The VM profile is intentionally conservative: no suspend, Bluetooth, power profiles, or backlight management.
+The VM profile is intentionally conservative: no Bluetooth, power profiles, or backlight tooling.
 
 ## Packages installed by the installer
 
@@ -149,9 +133,9 @@ The VM profile is intentionally conservative: no suspend, Bluetooth, power profi
 
 ```text
 hyprland xdg-desktop-portal-hyprland thunar
-ghostty alacritty kitty zsh starship tmux neovim yazi fastfetch
-hyprpaper hypridle hyprlock hyprpicker wireplumber playerctl
-polkit-gnome greetd greetd-tuigreet plymouth grim slurp imv
+ghostty alacritty kitty zsh starship neovim yazi fastfetch
+hyprpicker wireplumber playerctl greetd greetd-tuigreet plymouth
+grim slurp imv
 wl-clipboard jq kbd libnotify which xdg-user-dirs networkmanager git
 bat fzf eza zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
 ```
@@ -173,17 +157,8 @@ bat fzf eza zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
 | `.config/kitty` | `~/.config/kitty` |
 | `.config/starship` | `~/.config/starship` |
 | `.config/fastfetch` | `~/.config/fastfetch` |
-| `.tmux` | `~/.tmux` |
-| `.tmux.conf` | `~/.tmux.conf` |
 | `.zshrc` | `~/.zshrc` |
 | `Wallpapers` | `~/Wallpapers` |
-| `.face` | `~/.face` |
-
-Profile-specific files are copied into normal runtime paths:
-
-| Profile source | Runtime destination |
-| --- | --- |
-| `.config/hypr/profiles/<profile>/hypridle.conf` | `~/.config/hypr/hypridle.conf` |
 
 ## System files and services
 
@@ -317,58 +292,6 @@ That works well for laptops, VMs, and changing monitor setups. A fixed three-mon
 hyprctl monitors
 ```
 
-## Tmux after installation
-
-The installer installs `tmux` and copies the tracked configuration. Plugins are intentionally installed on the target machine through TPM.
-
-Install TPM if needed:
-
-```sh
-mkdir -p ~/.tmux/plugins
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
-
-Open tmux:
-
-```sh
-tmux
-```
-
-Install plugins:
-
-```text
-Ctrl-a + I
-```
-
-Useful tmux bindings:
-
-| Binding | Action |
-| --- | --- |
-| `Ctrl-a` | Prefix key. |
-| `Ctrl-a r` | Reload tmux config. |
-| `Ctrl-a v` | Split pane horizontally in the current directory. |
-| `Ctrl-a d` | Split pane vertically in the current directory. |
-| `Ctrl-a x` | Ask before killing current pane. |
-| `Ctrl-a &` | Ask before killing current window. |
-| `Ctrl-a K` | Ask before killing current session. |
-| Copy mode `y` | Copy selection through tmux clipboard integration. |
-
-Configured plugins:
-
-```text
-tmux-plugins/tpm
-tmux-plugins/tmux-resurrect
-tmux-plugins/tmux-yank
-christoomey/vim-tmux-navigator
-alexwforsythe/tmux-which-key
-```
-
-The shell does not auto-start tmux. Start it manually when you want it:
-
-```sh
-tmux
-```
-
 ## Zsh
 
 The installer copies `.zshrc`, attempts to set Zsh as the default shell when possible, and keeps `$HOME/.local/bin` in `PATH`.
@@ -384,6 +307,4 @@ Use your own Neovim configuration if you want one. This keeps the desktop instal
 ## After installation checklist
 
 1. Reboot or log out/in if Zsh, Greetd, TTY colors, or Plymouth changes need to apply.
-2. Install SF Pro Display manually if you want the intended font match.
-3. Install Tmux plugins with TPM using `Ctrl-a + I` inside tmux.
-4. If using Plymouth, finish the initramfs step for your system: `sudo mkinitcpio -P` on mkinitcpio, or `sudo plymouth-set-default-theme custom && sudo dracut-rebuild` on Dracut.
+2. If using Plymouth, finish the initramfs step for your system: `sudo mkinitcpio -P` on mkinitcpio, or `sudo plymouth-set-default-theme custom && sudo dracut-rebuild` on Dracut.

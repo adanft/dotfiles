@@ -14,17 +14,12 @@ stage_packages() {
     kitty
     zsh
     starship
-    tmux
     neovim
     yazi
     fastfetch
-    hyprpaper
-    hypridle
-    hyprlock
     hyprpicker
     wireplumber
     playerctl
-    polkit-gnome
     greetd
     greetd-tuigreet
     plymouth

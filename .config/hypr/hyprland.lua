@@ -53,16 +53,6 @@ local focus_workspace = "$HOME/.config/hypr/scripts/focus_workspace.sh"
 local move_window_workspace = "$HOME/.config/hypr/scripts/move_window_workspace.sh"
 local toggle_layout = "$HOME/.config/hypr/scripts/toggle_layout.sh"
 
--------------
--- Startup --
--------------
-
-hl.on("hyprland.start", function()
-  hl.exec_cmd("hyprpaper")
-  hl.exec_cmd("hypridle")
-  hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
-end)
-
 -----------------
 -- Environment --
 -----------------
