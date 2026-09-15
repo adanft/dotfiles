@@ -29,6 +29,10 @@ stage_verify() {
     jq
   )
 
+  if [[ "$SELECTED_PROFILE" == "laptop" || "$SELECTED_PROFILE" == "desktop" ]]; then
+    commands+=(bluetoothctl)
+  fi
+
   local cmd
   for cmd in "${commands[@]}"; do
     if command -v "$cmd" >/dev/null 2>&1; then
@@ -48,5 +52,13 @@ stage_verify() {
     log_ok "tty-colors.service is enabled."
   else
     log_warn "tty-colors.service is not enabled."
+  fi
+
+  if [[ "$SELECTED_PROFILE" == "laptop" || "$SELECTED_PROFILE" == "desktop" ]]; then
+    if system_service_enabled bluetooth.service; then
+      log_ok "bluetooth.service is enabled."
+    else
+      log_warn "bluetooth.service is not enabled."
+    fi
   fi
 }

@@ -47,8 +47,8 @@ stage_packages() {
   local profile_packages=()
 
   if [[ "$SELECTED_PROFILE" == "laptop" || "$SELECTED_PROFILE" == "desktop" ]]; then
-    # Laptop and desktop profiles include graphical Bluetooth management.
-    profile_packages+=(blueman)
+    # Keep Bluetooth functional without installing a graphical manager.
+    profile_packages+=(bluez bluez-utils)
   fi
 
   if [[ "$SELECTED_PROFILE" == "laptop" ]]; then

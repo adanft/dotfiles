@@ -122,7 +122,7 @@ All profiles install the shared Hyprland desktop base. The differences are only 
 
 | Area | Desktop | Laptop | VM |
 | --- | --- | --- | --- |
-| Extra packages | `blueman`, `power-profiles-daemon` | `blueman`, `brightnessctl`, `power-profiles-daemon` | None |
+| Extra packages | `bluez`, `bluez-utils`, `power-profiles-daemon` | `bluez`, `bluez-utils`, `brightnessctl`, `power-profiles-daemon` | None |
 | Services | NetworkManager, greetd, power profiles, Bluetooth | NetworkManager, greetd, power profiles, Bluetooth | NetworkManager, greetd |
 
 The VM profile is intentionally conservative: no Bluetooth, power profiles, or backlight tooling.
@@ -144,9 +144,11 @@ bat fzf eza zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
 
 | Profile | Extra packages |
 | --- | --- |
-| `desktop` | `blueman`, `power-profiles-daemon` |
-| `laptop` | `blueman`, `brightnessctl`, `power-profiles-daemon` |
+| `desktop` | `bluez`, `bluez-utils`, `power-profiles-daemon` |
+| `laptop` | `bluez`, `bluez-utils`, `brightnessctl`, `power-profiles-daemon` |
 | `vm` | None |
+
+Desktop and laptop profiles provide the BlueZ daemon and `bluetoothctl` command without installing a graphical Bluetooth manager.
 
 ## What gets copied
 
