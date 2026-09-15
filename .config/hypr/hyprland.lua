@@ -65,6 +65,15 @@ hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+
+local nvidia_module = io.open("/sys/module/nvidia/version", "r")
+if nvidia_module then
+  nvidia_module:close()
+  hl.env("LIBVA_DRIVER_NAME", "nvidia")
+  hl.env("NVD_BACKEND", "direct")
+  hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
+end
 
 -------------------
 -- Look and feel --

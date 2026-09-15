@@ -276,6 +276,8 @@ Main modifier: `SUPER`.
 | `XF86AudioPlay` | Play/pause media with `playerctl`. |
 | `XF86AudioPrev` | Previous media item with `playerctl`. |
 
+The previous/next workspace helpers cycle through numeric workspaces assigned to the active monitor. With the portable monitor configuration, they fall back to cycling through all numeric workspaces.
+
 Laptop brightness keybindings are included as commented examples in `hyprland.lua`; enable them if your laptop backlight device works with `brightnessctl`.
 
 ## Hyprland monitor layout
@@ -291,6 +293,8 @@ That works well for laptops, VMs, and changing monitor setups. A fixed three-mon
 ```sh
 hyprctl monitors
 ```
+
+When the NVIDIA kernel module is present, Hyprland also exports the NVIDIA VA-API, GBM backend, and GLX vendor environment variables. Other GPUs keep the portable defaults.
 
 ## Zsh
 

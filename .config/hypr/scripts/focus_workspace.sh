@@ -1,23 +1,8 @@
 #!/bin/bash
+set -euo pipefail
 
+dir=${1:-}
 current_workspace=$(hyprctl -j activeworkspace | jq -r '.id')
-workspaces=$(hyprctl -j workspacerules | jq '[.[] | .workspaceString | select(test("^[0-9]+$")) | tonumber] | max')
-
-dir=$1
-
-if [[ "$dir" == "next" ]]; then
-  target_workspace=$((current_workspace + 1))
-  if [[ $target_workspace -gt $workspaces ]]; then
-    target_workspace=1
-  fi
-elif [[ "$dir" == "prev" ]]; then
-  target_workspace=$((current_workspace - 1))
-  if [[ $target_workspace -lt 1 ]]; then
-    target_workspace=$workspaces
-  fi
-else
-  echo "Missing parameter: $0 [next|prev]"
-  exit 1
-fi
+target_workspace=$("$HOME/.config/hypr/scripts/get_adjacent_workspace.sh" "$dir" "$current_workspace")
 
 hyprctl dispatch "hl.dsp.focus({ workspace = $target_workspace })"
