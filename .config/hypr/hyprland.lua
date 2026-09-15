@@ -47,7 +47,7 @@ end
 
 local terminal = "ghostty"
 local secondary_terminal = "kitty"
-local file_manager = "thunar"
+local file_manager = "pcmanfm-qt"
 local picker = "hyprpicker -a"
 local focus_workspace = "$HOME/.config/hypr/scripts/focus_workspace.sh"
 local move_window_workspace = "$HOME/.config/hypr/scripts/move_window_workspace.sh"

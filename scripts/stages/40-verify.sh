@@ -12,6 +12,7 @@ stage_verify() {
   local commands=(
     Hyprland
     tuigreet
+    pcmanfm-qt
     ghostty
     alacritty
     kitty
@@ -21,8 +22,6 @@ stage_verify() {
     playerctl
     yazi
     fastfetch
-    grim
-    slurp
     imv
     wl-copy
     setvtrgb

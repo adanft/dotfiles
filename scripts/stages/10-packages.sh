@@ -8,7 +8,7 @@ stage_packages() {
   local base_packages=(
     hyprland
     xdg-desktop-portal-hyprland
-    thunar
+    pcmanfm-qt
     ghostty
     alacritty
     kitty
@@ -23,8 +23,6 @@ stage_packages() {
     greetd
     greetd-tuigreet
     plymouth
-    grim
-    slurp
     imv
     wl-clipboard
     jq

@@ -132,10 +132,9 @@ The VM profile is intentionally conservative: no Bluetooth, power profiles, or b
 ### Shared packages
 
 ```text
-hyprland xdg-desktop-portal-hyprland thunar
+hyprland xdg-desktop-portal-hyprland pcmanfm-qt
 ghostty alacritty kitty zsh starship neovim yazi fastfetch
-hyprpicker wireplumber playerctl greetd greetd-tuigreet plymouth
-grim slurp imv
+hyprpicker wireplumber playerctl greetd greetd-tuigreet plymouth imv
 wl-clipboard jq kbd libnotify which xdg-user-dirs networkmanager git
 bat fzf eza zoxide ttf-iosevkaterm-nerd ttf-nerd-fonts-symbols
 ```
@@ -256,7 +255,7 @@ Main modifier: `SUPER`.
 | `SUPER + P` | Toggle pseudo tiling. |
 | `SUPER + J` | Toggle split direction. |
 | `SUPER + Tab` | Run layout toggle script. |
-| `SUPER + E` | Open Thunar. |
+| `SUPER + E` | Open PCManFM-Qt. |
 | `SUPER + Shift + P` | Open Hyprpicker color picker. |
 | `SUPER + Left/Right/Up/Down` | Focus window in that direction. |
 | `SUPER + 1..9` | Switch to workspace 1..9. |
